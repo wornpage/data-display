@@ -7,6 +7,7 @@ const avatar = read('Avatar');
 const badge = read('Badge');
 const chip = read('Chip');
 const progress = read('Progress');
+const timeline = read('Timeline');
 
 function relativeLuminance(hex: string) {
 	const channels = hex.match(/[0-9a-f]{2}/giu)!.map((value) => Number.parseInt(value, 16) / 255);
@@ -19,15 +20,15 @@ describe('@wornpage/data-display', () => {
 	it('declares one source-delivered v2 package', () => {
 		const pkg = require('../package.json');
 		expect(pkg.name).toBe('@wornpage/data-display');
-		expect(pkg.version).toBe('0.1.0');
+		expect(pkg.version).toBe('0.1.1');
 		expect(pkg.wornpage).toEqual({ contractVersion: 2, delivery: 'source' });
 		expect(pkg.main).toBe('./src/index.ts');
 	});
 
-	it('exports and compiles all four component surfaces', async () => {
+	it('exports and compiles all five component surfaces', async () => {
 		const mod = await import('../src/index.ts');
-		for (const name of ['Avatar', 'Badge', 'Chip', 'Progress']) expect(mod[name]).toBeDefined();
-		for (const [name, source] of Object.entries({ Avatar: avatar, Badge: badge, Chip: chip, Progress: progress })) {
+		for (const name of ['Avatar', 'Badge', 'Chip', 'Progress', 'Timeline']) expect(mod[name]).toBeDefined();
+		for (const [name, source] of Object.entries({ Avatar: avatar, Badge: badge, Chip: chip, Progress: progress, Timeline: timeline })) {
 			expect(() => compile(source, { filename: `${name}.svelte`, generate: 'client' })).not.toThrow();
 		}
 	});
@@ -87,5 +88,34 @@ describe('@wornpage/data-display', () => {
 		expect(progress).toContain('min-inline-size: 0;');
 		expect(progress).toContain('overflow-wrap: anywhere;');
 		expect(progress).toMatch(/@media \(prefers-reduced-motion: reduce\) \{\s*\.worn-progress-fill \{ transition: none; \}\s*\}/u);
+	});
+
+	it('uses native timeline semantics and hides only decorative tracks', () => {
+		expect(timeline).toContain('<ol class="worn-timeline {extraClass}" aria-label={ariaLabel} {...rest}>');
+		expect(timeline).toContain('<li class="worn-timeline-entry">');
+		expect(timeline).toContain('<article');
+		expect(timeline).toContain('<time datetime={date} class="worn-timeline-date">');
+		expect(timeline).toContain('<svelte:element this={headingTag} class="worn-timeline-title">');
+		expect(timeline).toContain('class="worn-timeline-marker" aria-hidden="true"');
+		expect(timeline).not.toContain('role="article"');
+	});
+
+	it('contains hostile timeline entries without relying on application styles', () => {
+		expect(timeline).toMatch(/\.worn-timeline \{[\s\S]*?contain: inline-size;[\s\S]*?inline-size: 100%;[\s\S]*?min-inline-size: 0;/u);
+		expect(timeline).toMatch(/\.worn-timeline-card \{[\s\S]*?max-inline-size: 100%;[\s\S]*?min-inline-size: 0;[\s\S]*?overflow-wrap: anywhere;/u);
+		expect(timeline).toMatch(/\.worn-timeline-meta \{[\s\S]*?flex-wrap: wrap;[\s\S]*?max-inline-size: 100%;[\s\S]*?min-inline-size: 0;/u);
+		expect(timeline).toMatch(/\.worn-timeline-date \{[\s\S]*?max-inline-size: 100%;[\s\S]*?overflow-wrap: anywhere;/u);
+		expect(timeline).toMatch(/\.worn-timeline-title \{[\s\S]*?overflow-wrap: anywhere;/u);
+		expect(timeline).toMatch(/\.worn-timeline-desc \{[\s\S]*?overflow-wrap: anywhere;/u);
+	});
+
+	it('owns date formatting, theme fallbacks, and motion preferences', async () => {
+		const { formatTimelineDate } = await import('../src/timeline.ts');
+		expect(formatTimelineDate('2026-08-14')).toBe('Aug 14, 2026');
+		expect(formatTimelineDate('not-a-date')).toBe('not-a-date');
+		expect(formatTimelineDate('x'.repeat(80))).toHaveLength(40);
+		expect(timeline).toContain('var(--cockpit-text, #26352f)');
+		expect(timeline).toContain('var(--cockpit-border, #d4cec5)');
+		expect(timeline).toMatch(/@media \(prefers-reduced-motion: reduce\) \{\s*\.worn-timeline-entry \{ animation: none; \}\s*\}/u);
 	});
 });
