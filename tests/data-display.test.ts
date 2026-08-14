@@ -56,7 +56,8 @@ describe('@wornpage/data-display', () => {
 		expect(avatar).toContain("const showImage = $derived(Boolean(src) && failedSrc !== src);");
 		expect(avatar).toContain("import { onMount } from 'svelte';");
 		expect(avatar).toContain('bind:this={imageElement}');
-		expect(avatar).toContain('if (imageElement?.complete && imageElement.naturalWidth === 0) handleImageError();');
+		expect(avatar).toContain('if (image.complete && image.naturalWidth === 0)');
+		expect(avatar).toContain('void image.decode().catch(markFailed);');
 		expect(avatar).toContain('onerror={handleImageError}');
 		expect(avatar).toMatch(/<img[\s\S]*?alt=""[\s\S]*?aria-hidden="true"/u);
 		expect(avatar).toContain('role="img"');

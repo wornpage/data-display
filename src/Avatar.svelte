@@ -49,7 +49,17 @@
 	}
 
 	onMount(() => {
-		if (imageElement?.complete && imageElement.naturalWidth === 0) handleImageError();
+		const image = imageElement;
+		if (!image) return;
+		const expectedSrc = src;
+		const markFailed = () => {
+			if (src === expectedSrc) failedSrc = expectedSrc;
+		};
+		if (image.complete && image.naturalWidth === 0) {
+			markFailed();
+			return;
+		}
+		void image.decode().catch(markFailed);
 	});
 </script>
 
