@@ -66,8 +66,9 @@ reduced motion.
 | `status` | `online \| away \| offline` | `offline` | Accessible presence state |
 | `class` | `string` | empty | Additional root class |
 
-Avatar owns one accessible image name. Failed image loads fall back to deterministic initials;
-all palette colors retain at least 4.5:1 contrast with white initials.
+Avatar owns one accessible image name. Failed image loads fall back to deterministic initials,
+including failures that complete before client hydration; all palette colors retain at least 4.5:1
+contrast with white initials.
 
 ## Progress
 

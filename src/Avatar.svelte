@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+
 	interface Props {
 		name?: string;
 		email?: string;
@@ -18,6 +20,7 @@
 	}: Props = $props();
 
 	let failedSrc = $state('');
+	let imageElement = $state<HTMLImageElement>();
 	const identity = $derived(name || email || 'User');
 	const showImage = $derived(Boolean(src) && failedSrc !== src);
 	const initials = $derived(
@@ -44,6 +47,10 @@
 	function handleImageError() {
 		failedSrc = src;
 	}
+
+	onMount(() => {
+		if (imageElement?.complete && imageElement.naturalWidth === 0) handleImageError();
+	});
 </script>
 
 <span
@@ -56,6 +63,7 @@
 >
 	{#if showImage}
 		<img
+			bind:this={imageElement}
 			{src}
 			alt=""
 			aria-hidden="true"
