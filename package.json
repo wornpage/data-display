@@ -1,0 +1,35 @@
+{
+  "name": "@wornpage/data-display",
+  "version": "0.1.0",
+  "description": "Svelte 5 badges, chips, avatars, and progress indicators for compact application workflows",
+  "type": "module",
+  "wornpage": {
+    "contractVersion": 2,
+    "delivery": "source"
+  },
+  "scripts": {
+    "test": "bun test"
+  },
+  "main": "./src/index.ts",
+  "svelte": "./src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "svelte": "./src/index.ts",
+      "default": "./src/index.ts"
+    }
+  },
+  "files": ["src", "README.md"],
+  "peerDependencies": {
+    "svelte": "^5.56.8"
+  },
+  "devDependencies": {
+    "svelte": "^5.56.8"
+  },
+  "keywords": ["svelte", "badge", "chip", "avatar", "progress", "wornpage"],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wornpage/data-display.git"
+  }
+}

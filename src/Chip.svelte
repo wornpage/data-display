@@ -1,0 +1,158 @@
+<script lang="ts">
+	interface Props {
+		label: string;
+		count?: number;
+		pressed?: boolean;
+		size?: 'sm' | 'md';
+		variant?: 'default' | 'danger';
+		class?: string;
+		title?: string;
+		'data-action'?: string;
+		'data-pack'?: string;
+		onclick?: (event: MouseEvent) => void;
+		ondragover?: (event: DragEvent) => void;
+		ondragleave?: (event: DragEvent) => void;
+		ondrop?: (event: DragEvent) => void;
+		children?: any;
+	}
+
+	let {
+		label,
+		count,
+		pressed = false,
+		size = 'md',
+		variant = 'default',
+		title,
+		onclick,
+		children,
+		class: extraClass = '',
+		...rest
+	}: Props = $props();
+
+	const classes = $derived(`worn-chip ${extraClass}`);
+</script>
+
+{#if onclick}
+	<button
+		type="button"
+		class={classes}
+		class:is-sm={size === 'sm'}
+		class:is-danger={variant === 'danger' && !pressed}
+		aria-pressed={pressed}
+		{title}
+		{...rest}
+		{onclick}
+	>
+		<span class="worn-chip-label">{label}</span>
+		{#if count !== undefined}
+			<span class="worn-chip-count">{count}</span>
+		{/if}
+		{@render children?.()}
+	</button>
+{:else}
+	<span
+		class={classes}
+		class:is-sm={size === 'sm'}
+		class:is-danger={variant === 'danger' && !pressed}
+		data-pressed={pressed ? '' : undefined}
+		{title}
+		{...rest}
+	>
+		<span class="worn-chip-label">{label}</span>
+		{#if count !== undefined}
+			<span class="worn-chip-count">{count}</span>
+		{/if}
+		{@render children?.()}
+	</span>
+{/if}
+
+<style>
+	.worn-chip {
+		align-items: center;
+		background: var(--cockpit-surface);
+		border: 1px solid var(--cockpit-border);
+		border-radius: 999px;
+		box-sizing: border-box;
+		color: var(--cockpit-text-muted);
+		display: inline-flex;
+		font-family: var(--font-typewriter);
+		font-size: 13px;
+		font-weight: 560;
+		gap: 6px;
+		line-height: 1.2;
+		max-inline-size: 100%;
+		min-height: 44px;
+		min-inline-size: 0;
+		padding: 6px 14px;
+		transition: background-color 0.12s ease, color 0.12s ease;
+	}
+
+	.worn-chip-label {
+		min-inline-size: 0;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	button.worn-chip {
+		cursor: pointer;
+		touch-action: manipulation;
+		user-select: none;
+	}
+
+	.worn-chip[aria-pressed='true'],
+	.worn-chip[data-pressed] {
+		background: var(--cockpit-accent);
+		border-color: var(--cockpit-accent);
+		color: var(--cockpit-accent-text);
+	}
+
+	.worn-chip.is-sm {
+		font-size: 12px;
+		padding: 2px 10px;
+	}
+
+	button.worn-chip:hover:not([aria-pressed='true']) {
+		background: var(--cockpit-accent-50);
+		color: var(--cockpit-text);
+	}
+
+	.worn-chip:focus-visible {
+		outline: 2px dashed var(--cockpit-accent);
+		outline-offset: 2px;
+	}
+
+	.worn-chip-count {
+		background: var(--cockpit-bg);
+		border: 1px solid var(--cockpit-border);
+		border-radius: 999px;
+		flex-shrink: 0;
+		font-size: 11px;
+		font-weight: 600;
+		line-height: 1.5;
+		min-inline-size: 20px;
+		padding: 0 7px;
+		text-align: center;
+	}
+
+	.worn-chip[aria-pressed='true'] .worn-chip-count,
+	.worn-chip[data-pressed] .worn-chip-count {
+		background: var(--cockpit-bg);
+		border-color: var(--cockpit-border);
+		color: var(--cockpit-text);
+	}
+
+	.worn-chip.is-danger {
+		border-color: var(--cockpit-danger-border);
+	}
+
+	.worn-chip.is-danger .worn-chip-count {
+		background: var(--cockpit-danger-bg);
+		border-color: var(--cockpit-danger-border);
+		color: var(--cockpit-danger-text);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.worn-chip { transition: none; }
+	}
+</style>
