@@ -19,7 +19,7 @@
 	let {
 		label,
 		count,
-		pressed = false,
+		pressed,
 		size = 'md',
 		variant = 'default',
 		title,
@@ -69,19 +69,18 @@
 <style>
 	.worn-chip {
 		align-items: center;
-		background: var(--cockpit-surface);
-		border: 1px solid var(--cockpit-border);
+		background: var(--cockpit-surface, #fdfbf7);
+		border: 1px solid var(--cockpit-border, #d0cac1);
 		border-radius: 999px;
 		box-sizing: border-box;
-		color: var(--cockpit-text-muted);
+		color: var(--cockpit-text-muted, #506058);
 		display: inline-flex;
-		font-family: var(--font-typewriter);
+		font-family: var(--font-typewriter, ui-monospace, SFMono-Regular, Consolas, monospace);
 		font-size: 13px;
 		font-weight: 560;
 		gap: 6px;
 		line-height: 1.2;
 		max-inline-size: 100%;
-		min-height: 44px;
 		min-inline-size: 0;
 		padding: 6px 14px;
 		transition: background-color 0.12s ease, color 0.12s ease;
@@ -96,15 +95,16 @@
 
 	button.worn-chip {
 		cursor: pointer;
+		min-height: 44px;
 		touch-action: manipulation;
 		user-select: none;
 	}
 
 	.worn-chip[aria-pressed='true'],
 	.worn-chip[data-pressed] {
-		background: var(--cockpit-accent);
-		border-color: var(--cockpit-accent);
-		color: var(--cockpit-accent-text);
+		background: var(--cockpit-accent, #0f766e);
+		border-color: var(--cockpit-accent, #0f766e);
+		color: var(--cockpit-accent-text, #fff);
 	}
 
 	.worn-chip.is-sm {
@@ -113,18 +113,18 @@
 	}
 
 	button.worn-chip:hover:not([aria-pressed='true']) {
-		background: var(--cockpit-accent-50);
-		color: var(--cockpit-text);
+		background: var(--cockpit-accent-50, #e1f3ee);
+		color: var(--cockpit-text, #21322b);
 	}
 
 	.worn-chip:focus-visible {
-		outline: 2px dashed var(--cockpit-accent);
+		outline: 2px dashed var(--cockpit-accent, #0f766e);
 		outline-offset: 2px;
 	}
 
 	.worn-chip-count {
-		background: var(--cockpit-bg);
-		border: 1px solid var(--cockpit-border);
+		background: var(--cockpit-bg, #f5f0e8);
+		border: 1px solid var(--cockpit-border, #d0cac1);
 		border-radius: 999px;
 		flex-shrink: 0;
 		font-size: 11px;
@@ -137,19 +137,19 @@
 
 	.worn-chip[aria-pressed='true'] .worn-chip-count,
 	.worn-chip[data-pressed] .worn-chip-count {
-		background: var(--cockpit-bg);
-		border-color: var(--cockpit-border);
-		color: var(--cockpit-text);
+		background: var(--cockpit-bg, #f5f0e8);
+		border-color: var(--cockpit-border, #d0cac1);
+		color: var(--cockpit-text, #21322b);
 	}
 
 	.worn-chip.is-danger {
-		border-color: var(--cockpit-danger-border);
+		border-color: var(--cockpit-danger-border, #b42318);
 	}
 
 	.worn-chip.is-danger .worn-chip-count {
-		background: var(--cockpit-danger-bg);
-		border-color: var(--cockpit-danger-border);
-		color: var(--cockpit-danger-text);
+		background: var(--cockpit-danger-bg, #fce8e7);
+		border-color: var(--cockpit-danger-border, #b42318);
+		color: var(--cockpit-danger-text, #7a1a14);
 	}
 
 	@media (prefers-reduced-motion: reduce) {

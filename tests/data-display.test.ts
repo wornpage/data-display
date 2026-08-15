@@ -20,7 +20,7 @@ describe('@wornpage/data-display', () => {
 	it('declares one source-delivered v2 package', () => {
 		const pkg = require('../package.json');
 		expect(pkg.name).toBe('@wornpage/data-display');
-		expect(pkg.version).toBe('0.1.1');
+		expect(pkg.version).toBe('0.1.2');
 		expect(pkg.wornpage).toEqual({ contractVersion: 2, delivery: 'source' });
 		expect(pkg.main).toBe('./src/index.ts');
 	});
@@ -42,15 +42,44 @@ describe('@wornpage/data-display', () => {
 		expect(badge).toMatch(/\.worn-badge\.is-sm \{[\s\S]*?font-size: 10px;[\s\S]*?padding: 1px 7px;/u);
 	});
 
-	it('keeps chips semantic, bounded, touch-safe, and motion-safe', () => {
+	it('keeps chip command and toggle semantics explicit', () => {
 		expect(chip).toContain('{#if onclick}');
+		expect(chip).toContain('\t\tpressed,');
+		expect(chip).not.toContain('pressed = false');
 		expect(chip).toContain('aria-pressed={pressed}');
 		expect(chip).toContain('data-pressed={pressed ? \'\' : undefined}');
+	});
+
+	it('keeps chips bounded, touch-safe, compact when static, and motion-safe', () => {
+		const rootRule = chip.match(/\n\t\.worn-chip \{([\s\S]*?)\n\t\}/u)?.[1] ?? '';
 		expect(chip).toContain('max-inline-size: 100%;');
-		expect(chip).toContain('min-height: 44px;');
+		expect(chip).toMatch(/button\.worn-chip \{[\s\S]*?min-height: 44px;/u);
+		expect(rootRule).not.toContain('min-height');
 		expect(chip).toContain('touch-action: manipulation;');
 		expect(chip).toContain('@media (prefers-reduced-motion: reduce)');
 		expect(chip).toContain('.worn-chip { transition: none; }');
+	});
+
+	it('owns standalone-safe badge and chip theme fallbacks', () => {
+		expect(badge).toContain('var(--cockpit-bg-secondary, #efede7)');
+		expect(badge).toContain('var(--cockpit-warning-text, #5f4300)');
+		expect(badge).toContain('var(--cockpit-accent-text, #fff)');
+		expect(chip).toContain('var(--cockpit-surface, #fdfbf7)');
+		expect(chip).toContain('var(--cockpit-text-muted, #506058)');
+		expect(chip).toContain('var(--cockpit-danger-text, #7a1a14)');
+		const pairs = [
+			['#21322b', '#efede7'],
+			['#506058', '#e2ddd5'],
+			['#ffffff', '#0f766e'],
+			['#5f4300', '#fff7ed'],
+			['#506058', '#fdfbf7'],
+			['#7a1a14', '#fce8e7']
+		];
+		for (const [foreground, background] of pairs) {
+			const light = Math.max(relativeLuminance(foreground), relativeLuminance(background));
+			const dark = Math.min(relativeLuminance(foreground), relativeLuminance(background));
+			expect((light + 0.05) / (dark + 0.05)).toBeGreaterThanOrEqual(4.5);
+		}
 	});
 
 	it('falls back from broken avatar images before or after hydration without a duplicate accessible name', () => {

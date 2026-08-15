@@ -33,13 +33,13 @@
 <style>
 	.worn-badge {
 		align-items: center;
-		background: var(--cockpit-bg-secondary);
+		background: var(--cockpit-bg-secondary, #efede7);
 		border: 1px solid transparent;
 		border-radius: 999px;
 		box-sizing: border-box;
-		color: var(--cockpit-text);
+		color: var(--cockpit-text, #21322b);
 		display: inline-flex;
-		font-family: var(--font-typewriter);
+		font-family: var(--font-typewriter, ui-monospace, SFMono-Regular, Consolas, monospace);
 		font-size: 11px;
 		font-weight: 600;
 		justify-content: center;
@@ -64,18 +64,18 @@
 	}
 
 	.worn-badge.is-warn {
-		background: var(--cockpit-warning-bg);
-		border-color: var(--cockpit-warning-border);
-		color: var(--cockpit-warning-text);
+		background: var(--cockpit-warning-bg, #fff7ed);
+		border-color: var(--cockpit-warning-border, #9a6b00);
+		color: var(--cockpit-warning-text, #5f4300);
 	}
 
 	.worn-badge.is-accent {
-		background: var(--cockpit-accent);
-		color: var(--cockpit-accent-text);
+		background: var(--cockpit-accent, #0f766e);
+		color: var(--cockpit-accent-text, #fff);
 	}
 
 	.worn-badge.is-muted {
-		background: var(--cockpit-border);
-		color: var(--cockpit-text-muted);
+		background: var(--cockpit-border, #e2ddd5);
+		color: var(--cockpit-text-muted, #506058);
 	}
 </style>

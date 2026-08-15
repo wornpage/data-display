@@ -58,17 +58,17 @@ Badge labels wrap within their parent, including unbroken identifiers.
 |------|------|---------|-------------|
 | `label` | `string` | required | Visible label |
 | `count` | `number` | - | Optional count |
-| `pressed` | `boolean` | `false` | Toggle state |
+| `pressed` | `boolean` | - | Optional toggle state |
 | `size` | `sm \| md` | `md` | Visual size |
 | `variant` | `default \| danger` | `default` | Visual tone |
-| `onclick` | `(event: MouseEvent) => void` | - | Renders an interactive toggle button |
+| `onclick` | `(event: MouseEvent) => void` | - | Renders a native button |
 | `ondragover` | `(event: DragEvent) => void` | - | Drag-over handler |
 | `ondragleave` | `(event: DragEvent) => void` | - | Drag-leave handler |
 | `ondrop` | `(event: DragEvent) => void` | - | Drop handler |
 
-Without `onclick`, Chip renders a display-only span. Interactive chips expose native button
-and pressed semantics, retain a 44px target, contain long labels, and stop transitions under
-reduced motion.
+Without `onclick`, Chip renders a compact display-only span. With `onclick`, it renders a native
+44px button; supplying `pressed` adds toggle semantics, while omitting it keeps one-shot commands
+as ordinary buttons. Long labels stay contained and transitions stop under reduced motion.
 
 ## Avatar
 
