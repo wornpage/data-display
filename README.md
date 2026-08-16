@@ -63,6 +63,7 @@ Badge labels wrap within their parent, including unbroken identifiers.
 |------|------|---------|-------------|
 | `label` | `string` | required | Visible label |
 | `count` | `number` | - | Optional count |
+| `href` | `string` | - | Renders a native link with the complete touch and focus treatment |
 | `pressed` | `boolean` | - | Optional toggle state |
 | `size` | `sm \| md` | `md` | Visual size |
 | `variant` | `default \| danger` | `default` | Visual tone |
@@ -71,9 +72,10 @@ Badge labels wrap within their parent, including unbroken identifiers.
 | `ondragleave` | `(event: DragEvent) => void` | - | Drag-leave handler |
 | `ondrop` | `(event: DragEvent) => void` | - | Drop handler |
 
-Without `onclick`, Chip renders a compact display-only span. With `onclick`, it renders a native
-44px button; supplying `pressed` adds toggle semantics, while omitting it keeps one-shot commands
-as ordinary buttons. Long labels stay contained and transitions stop under reduced motion.
+With `href`, Chip renders a native 44px link. With `onclick`, it renders a native 44px button;
+supplying `pressed` adds toggle semantics, while omitting it keeps one-shot commands as ordinary
+buttons. Without either prop, Chip remains a compact display-only span. Long labels stay contained
+and transitions stop under reduced motion.
 
 ## Avatar
 

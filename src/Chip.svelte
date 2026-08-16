@@ -2,6 +2,7 @@
 	interface Props {
 		label: string;
 		count?: number;
+		href?: string;
 		pressed?: boolean;
 		size?: 'sm' | 'md';
 		variant?: 'default' | 'danger';
@@ -19,6 +20,7 @@
 	let {
 		label,
 		count,
+		href,
 		pressed,
 		size = 'md',
 		variant = 'default',
@@ -32,7 +34,22 @@
 	const classes = $derived(`worn-chip ${extraClass}`);
 </script>
 
-{#if onclick}
+{#if href}
+	<a
+		class={classes}
+		class:is-sm={size === 'sm'}
+		class:is-danger={variant === 'danger' && !pressed}
+		{href}
+		{title}
+		{...rest}
+	>
+		<span class="worn-chip-label">{label}</span>
+		{#if count !== undefined}
+			<span class="worn-chip-count">{count}</span>
+		{/if}
+		{@render children?.()}
+	</a>
+{:else if onclick}
 	<button
 		type="button"
 		class={classes}
@@ -93,12 +110,15 @@
 		white-space: nowrap;
 	}
 
-	button.worn-chip {
+	button.worn-chip,
+	a.worn-chip {
 		cursor: pointer;
 		min-height: 44px;
 		touch-action: manipulation;
 		user-select: none;
 	}
+
+	a.worn-chip { text-decoration: none; }
 
 	.worn-chip[aria-pressed='true'],
 	.worn-chip[data-pressed] {
@@ -112,7 +132,8 @@
 		padding: 2px 10px;
 	}
 
-	button.worn-chip:hover:not([aria-pressed='true']) {
+	button.worn-chip:hover:not([aria-pressed='true']),
+	a.worn-chip:hover {
 		background: var(--cockpit-accent-50, #e1f3ee);
 		color: var(--cockpit-text, #21322b);
 	}

@@ -59,7 +59,10 @@ describe('@wornpage/data-display', () => {
 	});
 
 	it('keeps chip command and toggle semantics explicit', () => {
-		expect(chip).toContain('{#if onclick}');
+		expect(chip).toContain('{#if href}');
+		expect(chip).toContain('{:else if onclick}');
+		expect(chip).toContain('<a');
+		expect(chip).toContain('{href}');
 		expect(chip).toContain('\t\tpressed,');
 		expect(chip).not.toContain('pressed = false');
 		expect(chip).toContain('aria-pressed={pressed}');
@@ -69,7 +72,9 @@ describe('@wornpage/data-display', () => {
 	it('keeps chips bounded, touch-safe, compact when static, and motion-safe', () => {
 		const rootRule = chip.match(/\n\t\.worn-chip \{([\s\S]*?)\n\t\}/u)?.[1] ?? '';
 		expect(chip).toContain('max-inline-size: 100%;');
-		expect(chip).toMatch(/button\.worn-chip \{[\s\S]*?min-height: 44px;/u);
+		expect(chip).toMatch(/button\.worn-chip,\s*a\.worn-chip \{[\s\S]*?min-height: 44px;/u);
+		expect(chip).toContain('a.worn-chip { text-decoration: none; }');
+		expect(chip).toMatch(/button\.worn-chip:hover:not\(\[aria-pressed='true'\]\),\s*a\.worn-chip:hover/u);
 		expect(rootRule).not.toContain('min-height');
 		expect(chip).toContain('touch-action: manipulation;');
 		expect(chip).toContain('@media (prefers-reduced-motion: reduce)');
