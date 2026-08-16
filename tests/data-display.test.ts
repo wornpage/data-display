@@ -147,6 +147,13 @@ describe('@wornpage/data-display', () => {
 		expect(timeline).toMatch(/\.worn-timeline\.is-compact \.worn-timeline-card \{[\s\S]*?display: grid;[\s\S]*?grid-template-columns: auto minmax\(0, 1fr\);/u);
 	});
 
+	it('allows structured title content without changing the plain-title fallback', () => {
+		expect(timeline).toContain("import type { Snippet } from 'svelte';");
+		expect(timeline).toContain('titleContent?: Snippet<[TimelineEntry, number]>;');
+		expect(timeline).toContain('{#if titleContent}{@render titleContent(entry, i)}{:else}{title}{/if}');
+		expect(timeline).toContain('aria-label={entryLabel(iteration, title) || undefined}');
+	});
+
 	it('contains hostile timeline entries without relying on application styles', () => {
 		expect(timeline).toMatch(/\.worn-timeline \{[\s\S]*?contain: inline-size;[\s\S]*?inline-size: 100%;[\s\S]*?min-inline-size: 0;/u);
 		expect(timeline).toMatch(/\.worn-timeline-card \{[\s\S]*?max-inline-size: 100%;[\s\S]*?min-inline-size: 0;[\s\S]*?overflow-wrap: anywhere;/u);

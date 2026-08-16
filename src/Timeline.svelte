@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import Badge from './Badge.svelte';
 	import {
 		formatTimelineDate,
@@ -20,6 +21,8 @@
 		density?: 'default' | 'compact';
 		/** Optional date display formatter. The datetime value remains normalized ISO input. */
 		formatDate?: TimelineDateFormatter;
+		/** Optional structured title renderer. The string title remains the accessible fallback. */
+		titleContent?: Snippet<[TimelineEntry, number]>;
 		class?: string;
 		[key: string]: unknown;
 	}
@@ -31,6 +34,7 @@
 		headingLevel = 2,
 		density = 'default',
 		formatDate = formatTimelineDate,
+		titleContent,
 		class: extraClass = '',
 		...rest
 	}: Props = $props();
@@ -90,7 +94,11 @@
 						{#if date}<time datetime={date} class="worn-timeline-date">{formatDate(date)}</time>{/if}
 					</div>
 				{/if}
-				{#if title}<svelte:element this={headingTag} class="worn-timeline-title">{title}</svelte:element>{/if}
+				{#if title}
+					<svelte:element this={headingTag} class="worn-timeline-title">
+						{#if titleContent}{@render titleContent(entry, i)}{:else}{title}{/if}
+					</svelte:element>
+				{/if}
 				{#if description}<p class="worn-timeline-desc">{description}</p>{/if}
 				{#if meta}<span class="worn-timeline-entry-meta">{meta}</span>{/if}
 			</svelte:element>
