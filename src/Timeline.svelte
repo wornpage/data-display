@@ -8,7 +8,7 @@
 	} from './timeline';
 
 	interface Props {
-		/** Release rows in display order. */
+		/** Timeline rows in display order. */
 		entries: TimelineEntry[];
 		/** Badge prefix, for example "#" renders "#12". */
 		badgePrefix?: string;
@@ -48,7 +48,16 @@
 
 	function iterationText(value: unknown): string {
 		if (typeof value === 'number' && Number.isFinite(value)) return String(value);
-		return cleanText(value).slice(0, 24) || '?';
+		return cleanText(value).slice(0, 24);
+	}
+
+	function cleanHref(value: unknown): string {
+		return cleanText(value).slice(0, 2048);
+	}
+
+	function entryLabel(iteration: string, title: string): string {
+		if (!iteration) return title;
+		return title ? `Iteration ${iteration}: ${title}` : `Iteration ${iteration}`;
 	}
 </script>
 
@@ -58,22 +67,28 @@
 		{@const date = cleanDate(entry?.date)}
 		{@const title = cleanText(entry?.title)}
 		{@const description = cleanText(entry?.description)}
+		{@const href = cleanHref(entry?.href)}
+		{@const meta = cleanText(entry?.meta)}
 		<li class="worn-timeline-entry">
 			<div class="worn-timeline-marker" aria-hidden="true">
 				<span class="worn-timeline-dot" class:worn-timeline-dot-latest={i === 0}></span>
 				{#if i < safeEntries.length - 1}<span class="worn-timeline-line"></span>{/if}
 			</div>
-			<article
+			<svelte:element
+				this={href ? 'a' : 'article'}
 				class="worn-timeline-card"
-				aria-label={title ? `Iteration ${iteration}: ${title}` : `Iteration ${iteration}`}
+				class:worn-timeline-card-link={Boolean(href)}
+				href={href || undefined}
+				aria-label={entryLabel(iteration, title) || undefined}
 			>
 				<div class="worn-timeline-meta">
-					<Badge variant="accent" label={`${badgePrefix}${iteration}`} />
+					{#if iteration}<Badge variant="accent" label={`${badgePrefix}${iteration}`} />{/if}
 					{#if date}<time datetime={date} class="worn-timeline-date">{formatDate(date)}</time>{/if}
 				</div>
 				{#if title}<svelte:element this={headingTag} class="worn-timeline-title">{title}</svelte:element>{/if}
 				{#if description}<p class="worn-timeline-desc">{description}</p>{/if}
-			</article>
+				{#if meta}<span class="worn-timeline-entry-meta">{meta}</span>{/if}
+			</svelte:element>
 		</li>
 	{/each}
 </ol>
@@ -87,7 +102,7 @@
 		inline-size: 100%;
 		list-style: none;
 		margin: 0;
-		max-inline-size: 40rem;
+		max-inline-size: var(--worn-timeline-max-inline-size, 40rem);
 		min-inline-size: 0;
 		padding: 0;
 	}
@@ -152,6 +167,23 @@
 		padding: 4px 0 20px;
 	}
 
+	.worn-timeline-card-link {
+		border-radius: var(--cockpit-radius-sm, 6px);
+		min-block-size: 44px;
+		text-decoration: none;
+		touch-action: manipulation;
+		transition: background-color 120ms ease, color 120ms ease;
+	}
+
+	.worn-timeline-card-link:hover {
+		background: var(--cockpit-bg-secondary, #efede7);
+	}
+
+	.worn-timeline-card-link:focus-visible {
+		outline: 2px solid var(--cockpit-accent, #23796d);
+		outline-offset: 2px;
+	}
+
 	.worn-timeline-meta {
 		align-items: center;
 		display: flex;
@@ -189,6 +221,16 @@
 		overflow-wrap: anywhere;
 	}
 
+	.worn-timeline-entry-meta {
+		color: var(--cockpit-text-muted, #65746d);
+		display: block;
+		font-size: 12px;
+		margin-block-start: 4px;
+		max-inline-size: 100%;
+		min-inline-size: 0;
+		overflow-wrap: anywhere;
+	}
+
 	@keyframes worn-timeline-settle {
 		from { opacity: 0.72; transform: translateY(4px); }
 		to { opacity: 1; transform: translateY(0); }
@@ -196,9 +238,17 @@
 
 	@media (max-width: 420px) {
 		.worn-timeline-entry { gap: 12px; }
+		.worn-timeline-desc {
+			display: -webkit-box;
+			overflow: hidden;
+			-webkit-box-orient: vertical;
+			-webkit-line-clamp: 3;
+			line-clamp: 3;
+		}
 	}
 
 	@media (prefers-reduced-motion: reduce) {
 		.worn-timeline-entry { animation: none; }
+		.worn-timeline-card-link { transition: none; }
 	}
 </style>

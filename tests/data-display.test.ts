@@ -8,6 +8,7 @@ const badge = read('Badge');
 const chip = read('Chip');
 const progress = read('Progress');
 const timeline = read('Timeline');
+const timelineContract = readFileSync(new URL('../src/timeline.ts', import.meta.url), 'utf8');
 
 function relativeLuminance(hex: string) {
 	const channels = hex.match(/[0-9a-f]{2}/giu)!.map((value) => Number.parseInt(value, 16) / 255);
@@ -122,11 +123,25 @@ describe('@wornpage/data-display', () => {
 	it('uses native timeline semantics and hides only decorative tracks', () => {
 		expect(timeline).toContain('<ol class="worn-timeline {extraClass}" aria-label={ariaLabel} {...rest}>');
 		expect(timeline).toContain('<li class="worn-timeline-entry">');
-		expect(timeline).toContain('<article');
+		expect(timeline).toContain("this={href ? 'a' : 'article'}");
+		expect(timeline).toContain('href={href || undefined}');
 		expect(timeline).toContain('<time datetime={date} class="worn-timeline-date">');
 		expect(timeline).toContain('<svelte:element this={headingTag} class="worn-timeline-title">');
 		expect(timeline).toContain('class="worn-timeline-marker" aria-hidden="true"');
 		expect(timeline).not.toContain('role="article"');
+	});
+
+	it('supports optional linked activity entries without synthetic iteration badges', () => {
+		expect(timelineContract).toContain('iter?: number | string;');
+		expect(timelineContract).toContain('date?: string;');
+		expect(timelineContract).toContain('description?: string;');
+		expect(timelineContract).toContain('href?: string;');
+		expect(timelineContract).toContain('meta?: string;');
+		expect(timeline).toContain('{#if iteration}<Badge variant="accent" label={`${badgePrefix}${iteration}`} />{/if}');
+		expect(timeline).toContain('{#if meta}<span class="worn-timeline-entry-meta">{meta}</span>{/if}');
+		expect(timeline).toMatch(/\.worn-timeline-card-link \{[\s\S]*?min-block-size: 44px;[\s\S]*?touch-action: manipulation;/u);
+		expect(timeline).toMatch(/\.worn-timeline-card-link:focus-visible \{[\s\S]*?outline: 2px solid var\(--cockpit-accent, #23796d\);/u);
+		expect(timeline).toMatch(/@media \(max-width: 420px\) \{[\s\S]*?\.worn-timeline-desc \{[\s\S]*?-webkit-line-clamp: 3;[\s\S]*?line-clamp: 3;/u);
 	});
 
 	it('contains hostile timeline entries without relying on application styles', () => {
@@ -136,6 +151,8 @@ describe('@wornpage/data-display', () => {
 		expect(timeline).toMatch(/\.worn-timeline-date \{[\s\S]*?max-inline-size: 100%;[\s\S]*?overflow-wrap: anywhere;/u);
 		expect(timeline).toMatch(/\.worn-timeline-title \{[\s\S]*?overflow-wrap: anywhere;/u);
 		expect(timeline).toMatch(/\.worn-timeline-desc \{[\s\S]*?overflow-wrap: anywhere;/u);
+		expect(timeline).toMatch(/\.worn-timeline-entry-meta \{[\s\S]*?max-inline-size: 100%;[\s\S]*?min-inline-size: 0;[\s\S]*?overflow-wrap: anywhere;/u);
+		expect(timeline).toContain('max-inline-size: var(--worn-timeline-max-inline-size, 40rem);');
 	});
 
 	it('owns date formatting, theme fallbacks, and motion preferences', async () => {
@@ -145,6 +162,7 @@ describe('@wornpage/data-display', () => {
 		expect(formatTimelineDate('x'.repeat(80))).toHaveLength(40);
 		expect(timeline).toContain('var(--cockpit-text, #26352f)');
 		expect(timeline).toContain('var(--cockpit-border, #d4cec5)');
-		expect(timeline).toMatch(/@media \(prefers-reduced-motion: reduce\) \{\s*\.worn-timeline-entry \{ animation: none; \}\s*\}/u);
+		expect(timeline).toContain('.worn-timeline-entry { animation: none; }');
+		expect(timeline).toContain('.worn-timeline-card-link { transition: none; }');
 	});
 });

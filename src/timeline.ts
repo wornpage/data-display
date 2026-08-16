@@ -1,8 +1,10 @@
 export interface TimelineEntry {
-	iter: number;
-	date: string;
+	iter?: number | string;
+	date?: string;
 	title: string;
-	description: string;
+	description?: string;
+	href?: string;
+	meta?: string;
 }
 
 export type TimelineHeadingLevel = 2 | 3 | 4 | 5 | 6;

@@ -109,6 +109,13 @@ labels, uses CSP-safe width buckets, and disables width transitions under reduce
 | `formatDate` | `(value: string) => string` | `formatTimelineDate` | Visible date formatter |
 | `class` | `string` | empty | Additional root class |
 
+`TimelineEntry` requires `title`; `iter`, `date`, `description`, `href`, and `meta` are optional.
+Entries with `iter` retain the numbered release badge. Entries with `href` render as native linked
+cards with a 44px target and visible keyboard focus; entries without `href` remain articles. Set
+`--worn-timeline-max-inline-size` on a container when a product timeline should exceed the default
+readable width.
+
 Timeline exposes native ordered-list, list-item, article, heading, and time semantics. Decorative
 tracks stay out of the accessibility tree. Hostile labels and entries wrap inside the component,
-theme tokens have standalone fallbacks, and entry motion is disabled under reduced motion.
+compact descriptions stop at three lines, theme tokens have standalone fallbacks, and entry motion
+and linked-card transitions are disabled under reduced motion.
