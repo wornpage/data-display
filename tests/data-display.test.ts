@@ -143,6 +143,7 @@ describe('@wornpage/data-display', () => {
 		expect(timeline).toMatch(/\.worn-timeline-card-link \{[\s\S]*?min-block-size: 44px;[\s\S]*?touch-action: manipulation;/u);
 		expect(timeline).toMatch(/\.worn-timeline-card-link:focus-visible \{[\s\S]*?outline: 2px solid var\(--cockpit-accent, #23796d\);/u);
 		expect(timeline).toMatch(/@media \(max-width: 420px\) \{[\s\S]*?\.worn-timeline\.is-compact \.worn-timeline-title,[\s\S]*?\.worn-timeline-desc \{[\s\S]*?-webkit-line-clamp: 3;[\s\S]*?line-clamp: 3;/u);
+		expect(timeline).toMatch(/@media \(max-width: 420px\) \{[\s\S]*?\.worn-timeline\.is-compact \.worn-timeline-title \{[\s\S]*?grid-column: 1 \/ -1;[\s\S]*?grid-row: 2;[\s\S]*?\.worn-timeline\.is-compact \.worn-timeline-desc \{ grid-row: 3; \}[\s\S]*?\.worn-timeline\.is-compact \.worn-timeline-entry-meta \{ grid-row: 4; \}/u);
 		expect(timeline).toMatch(/\.worn-timeline\.is-compact \.worn-timeline-entry \{[\s\S]*?min-block-size: 44px;/u);
 		expect(timeline).toMatch(/\.worn-timeline\.is-compact \.worn-timeline-card \{[\s\S]*?display: grid;[\s\S]*?grid-template-columns: auto minmax\(0, 1fr\);/u);
 	});

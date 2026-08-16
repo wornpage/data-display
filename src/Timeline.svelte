@@ -291,6 +291,12 @@
 
 	@media (max-width: 420px) {
 		.worn-timeline-entry { gap: 12px; }
+		.worn-timeline.is-compact .worn-timeline-title {
+			grid-column: 1 / -1;
+			grid-row: 2;
+		}
+		.worn-timeline.is-compact .worn-timeline-desc { grid-row: 3; }
+		.worn-timeline.is-compact .worn-timeline-entry-meta { grid-row: 4; }
 		.worn-timeline.is-compact .worn-timeline-title,
 		.worn-timeline-desc {
 			display: -webkit-box;
