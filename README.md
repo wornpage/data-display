@@ -106,6 +106,7 @@ labels, uses CSP-safe width buckets, and disables width transitions under reduce
 | `badgePrefix` | `string` | `#` | Prefix for iteration badges |
 | `ariaLabel` | `string` | `Release history` | Accessible ordered-list name |
 | `headingLevel` | `2 \| 3 \| 4 \| 5 \| 6` | `2` | Entry-title heading rank |
+| `density` | `default \| compact` | `default` | Release or operational row density |
 | `formatDate` | `(value: string) => string` | `formatTimelineDate` | Visible date formatter |
 | `class` | `string` | empty | Additional root class |
 

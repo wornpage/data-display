@@ -16,6 +16,8 @@
 		ariaLabel?: string;
 		/** Heading rank used for entry titles. */
 		headingLevel?: TimelineHeadingLevel;
+		/** Row density. Compact keeps operational timelines scannable. */
+		density?: 'default' | 'compact';
 		/** Optional date display formatter. The datetime value remains normalized ISO input. */
 		formatDate?: TimelineDateFormatter;
 		class?: string;
@@ -27,6 +29,7 @@
 		badgePrefix = '#',
 		ariaLabel = 'Release history',
 		headingLevel = 2,
+		density = 'default',
 		formatDate = formatTimelineDate,
 		class: extraClass = '',
 		...rest
@@ -61,7 +64,7 @@
 	}
 </script>
 
-<ol class="worn-timeline {extraClass}" aria-label={ariaLabel} {...rest}>
+<ol class="worn-timeline {extraClass}" class:is-compact={density === 'compact'} aria-label={ariaLabel} {...rest}>
 	{#each safeEntries as entry, i}
 		{@const iteration = iterationText(entry?.iter)}
 		{@const date = cleanDate(entry?.date)}
@@ -81,10 +84,12 @@
 				href={href || undefined}
 				aria-label={entryLabel(iteration, title) || undefined}
 			>
-				<div class="worn-timeline-meta">
-					{#if iteration}<Badge variant="accent" label={`${badgePrefix}${iteration}`} />{/if}
-					{#if date}<time datetime={date} class="worn-timeline-date">{formatDate(date)}</time>{/if}
-				</div>
+				{#if iteration || date}
+					<div class="worn-timeline-meta">
+						{#if iteration}<Badge variant="accent" label={`${badgePrefix}${iteration}`} />{/if}
+						{#if date}<time datetime={date} class="worn-timeline-date">{formatDate(date)}</time>{/if}
+					</div>
+				{/if}
 				{#if title}<svelte:element this={headingTag} class="worn-timeline-title">{title}</svelte:element>{/if}
 				{#if description}<p class="worn-timeline-desc">{description}</p>{/if}
 				{#if meta}<span class="worn-timeline-entry-meta">{meta}</span>{/if}
@@ -182,6 +187,46 @@
 	.worn-timeline-card-link:focus-visible {
 		outline: 2px solid var(--cockpit-accent, #23796d);
 		outline-offset: 2px;
+	}
+
+	.worn-timeline.is-compact .worn-timeline-entry {
+		gap: 12px;
+		min-block-size: 44px;
+	}
+
+	.worn-timeline.is-compact .worn-timeline-card {
+		column-gap: 8px;
+		display: grid;
+		grid-template-columns: auto minmax(0, 1fr);
+		padding: 2px 4px 10px;
+		row-gap: 3px;
+	}
+
+	.worn-timeline.is-compact .worn-timeline-meta {
+		grid-column: 1;
+		grid-row: 1;
+		margin-block-end: 0;
+	}
+
+	.worn-timeline.is-compact .worn-timeline-title {
+		font-size: 13px;
+		grid-column: 2;
+		grid-row: 1;
+		margin: 0;
+	}
+
+	.worn-timeline.is-compact .worn-timeline-desc {
+		font-size: 12px;
+		grid-column: 1 / -1;
+		grid-row: 2;
+		line-height: 1.45;
+	}
+
+	.worn-timeline.is-compact .worn-timeline-entry-meta {
+		font-size: 11px;
+		grid-column: 1 / -1;
+		grid-row: 3;
+		margin-block-start: 0;
 	}
 
 	.worn-timeline-meta {

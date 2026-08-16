@@ -121,7 +121,7 @@ describe('@wornpage/data-display', () => {
 	});
 
 	it('uses native timeline semantics and hides only decorative tracks', () => {
-		expect(timeline).toContain('<ol class="worn-timeline {extraClass}" aria-label={ariaLabel} {...rest}>');
+		expect(timeline).toContain('<ol class="worn-timeline {extraClass}" class:is-compact={density === \'compact\'} aria-label={ariaLabel} {...rest}>');
 		expect(timeline).toContain('<li class="worn-timeline-entry">');
 		expect(timeline).toContain("this={href ? 'a' : 'article'}");
 		expect(timeline).toContain('href={href || undefined}');
@@ -137,11 +137,14 @@ describe('@wornpage/data-display', () => {
 		expect(timelineContract).toContain('description?: string;');
 		expect(timelineContract).toContain('href?: string;');
 		expect(timelineContract).toContain('meta?: string;');
+		expect(timeline).toContain("density?: 'default' | 'compact';");
 		expect(timeline).toContain('{#if iteration}<Badge variant="accent" label={`${badgePrefix}${iteration}`} />{/if}');
 		expect(timeline).toContain('{#if meta}<span class="worn-timeline-entry-meta">{meta}</span>{/if}');
 		expect(timeline).toMatch(/\.worn-timeline-card-link \{[\s\S]*?min-block-size: 44px;[\s\S]*?touch-action: manipulation;/u);
 		expect(timeline).toMatch(/\.worn-timeline-card-link:focus-visible \{[\s\S]*?outline: 2px solid var\(--cockpit-accent, #23796d\);/u);
 		expect(timeline).toMatch(/@media \(max-width: 420px\) \{[\s\S]*?\.worn-timeline-desc \{[\s\S]*?-webkit-line-clamp: 3;[\s\S]*?line-clamp: 3;/u);
+		expect(timeline).toMatch(/\.worn-timeline\.is-compact \.worn-timeline-entry \{[\s\S]*?min-block-size: 44px;/u);
+		expect(timeline).toMatch(/\.worn-timeline\.is-compact \.worn-timeline-card \{[\s\S]*?display: grid;[\s\S]*?grid-template-columns: auto minmax\(0, 1fr\);/u);
 	});
 
 	it('contains hostile timeline entries without relying on application styles', () => {
