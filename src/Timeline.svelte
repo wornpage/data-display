@@ -291,6 +291,7 @@
 
 	@media (max-width: 420px) {
 		.worn-timeline-entry { gap: 12px; }
+		.worn-timeline.is-compact .worn-timeline-title,
 		.worn-timeline-desc {
 			display: -webkit-box;
 			overflow: hidden;
