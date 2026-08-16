@@ -6,6 +6,8 @@ const read = (name: string) => readFileSync(new URL(`../src/${name}.svelte`, imp
 const avatar = read('Avatar');
 const badge = read('Badge');
 const chip = read('Chip');
+const metric = read('Metric');
+const metricGrid = read('MetricGrid');
 const progress = read('Progress');
 const timeline = read('Timeline');
 const timelineContract = readFileSync(new URL('../src/timeline.ts', import.meta.url), 'utf8');
@@ -26,12 +28,25 @@ describe('@wornpage/data-display', () => {
 		expect(pkg.main).toBe('./src/index.ts');
 	});
 
-	it('exports and compiles all five component surfaces', async () => {
+	it('exports and compiles all seven component surfaces', async () => {
 		const mod = await import('../src/index.ts');
-		for (const name of ['Avatar', 'Badge', 'Chip', 'Progress', 'Timeline']) expect(mod[name]).toBeDefined();
-		for (const [name, source] of Object.entries({ Avatar: avatar, Badge: badge, Chip: chip, Progress: progress, Timeline: timeline })) {
+		for (const name of ['Avatar', 'Badge', 'Chip', 'Metric', 'MetricGrid', 'Progress', 'Timeline']) expect(mod[name]).toBeDefined();
+		for (const [name, source] of Object.entries({ Avatar: avatar, Badge: badge, Chip: chip, Metric: metric, MetricGrid: metricGrid, Progress: progress, Timeline: timeline })) {
 			expect(() => compile(source, { filename: `${name}.svelte`, generate: 'client' })).not.toThrow();
 		}
+	});
+
+	it('owns semantic metric lists and bounded dashboard values', () => {
+		expect(metricGrid).toContain('<ul class="worn-metric-grid {extraClass}" aria-label={ariaLabel} {...rest}>');
+		expect(metricGrid).toContain('{@render children?.()}');
+		expect(metricGrid).toMatch(/grid-template-columns: repeat\(auto-fit, minmax\(min\(100%, 10\.5rem\), 1fr\)\);/u);
+		expect(metricGrid).toMatch(/@media \(max-width: 420px\) \{[\s\S]*?grid-template-columns: minmax\(0, 1fr\);/u);
+		expect(metric).toContain('<li');
+		expect(metric).toContain('<span class="worn-metric-label">{label}</span>');
+		expect(metric).toContain('<strong class="worn-metric-value">{value}</strong>');
+		expect(metric).toContain('overflow-wrap: anywhere;');
+		expect(metric).toContain('font-variant-numeric: tabular-nums;');
+		expect(metric).toContain("tone?: 'default' | 'success' | 'warning';");
 	});
 
 	it('contains badges and implements a real compact size', () => {
@@ -110,6 +125,9 @@ describe('@wornpage/data-display', () => {
 		expect(progress).toContain('aria-valuenow={safeValue}');
 		expect(progress).toContain('aria-valuemax={safeMax}');
 		expect(progress).toContain('const bucket = $derived(Math.round(pct / 5) * 5);');
+		expect(progress).toContain('aria-label={ariaLabel || label || `${Math.round(pct)}%`}');
+		expect(progress).toContain("variant?: 'default' | 'accent' | 'muted' | 'warn' | 'danger';");
+		expect(progress).toContain('.worn-progress.is-muted .worn-progress-fill { background: var(--cockpit-text-muted); }');
 	});
 
 	it('contains progress labels and stops width motion when requested', () => {

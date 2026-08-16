@@ -3,14 +3,16 @@
 		value?: number;
 		max?: number;
 		label?: string;
+		ariaLabel?: string;
 		size?: 'sm' | 'md';
-		variant?: 'default' | 'accent' | 'warn' | 'danger';
+		variant?: 'default' | 'accent' | 'muted' | 'warn' | 'danger';
 	}
 
 	let {
 		value = 0,
 		max = 100,
 		label,
+		ariaLabel,
 		size = 'md',
 		variant = 'default'
 	}: Props = $props();
@@ -25,13 +27,14 @@
 	class="worn-progress"
 	class:is-sm={size === 'sm'}
 	class:is-accent={variant === 'accent'}
+	class:is-muted={variant === 'muted'}
 	class:is-warn={variant === 'warn'}
 	class:is-danger={variant === 'danger'}
 	role="progressbar"
 	aria-valuenow={safeValue}
 	aria-valuemin={0}
 	aria-valuemax={safeMax}
-	aria-label={label || `${Math.round(pct)}%`}
+	aria-label={ariaLabel || label || `${Math.round(pct)}%`}
 >
 	<div class="worn-progress-track">
 		<div class="worn-progress-fill worn-progress-fill-{bucket}"></div>
@@ -73,6 +76,7 @@
 	}
 
 	.worn-progress.is-accent .worn-progress-fill { background: var(--cockpit-accent); }
+	.worn-progress.is-muted .worn-progress-fill { background: var(--cockpit-text-muted); }
 	.worn-progress.is-warn .worn-progress-fill { background: var(--cockpit-warning-text); }
 	.worn-progress.is-danger .worn-progress-fill { background: var(--cockpit-danger-text); }
 

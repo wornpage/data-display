@@ -1,6 +1,6 @@
 # @wornpage/data-display
 
-Compact Svelte 5 badges, chips, avatars, progress indicators, and timelines for application workflows.
+Compact Svelte 5 badges, chips, avatars, metrics, progress indicators, and timelines for application workflows.
 The package is source-delivered so consuming SvelteKit applications compile it with their
 own theme tokens and CSP policy.
 
@@ -24,7 +24,7 @@ bun add @wornpage/data-display
 
 ```svelte
 <script>
-  import { Avatar, Badge, Chip, Progress, Timeline } from '@wornpage/data-display';
+  import { Avatar, Badge, Chip, Metric, MetricGrid, Progress, Timeline } from '@wornpage/data-display';
 
   let active = $state(false);
   const releases = [
@@ -36,6 +36,11 @@ bun add @wornpage/data-display
 <Badge label="In review" variant="accent" />
 <Chip label="Assigned to me" count={8} pressed={active} onclick={() => (active = !active)} />
 <Avatar name="Ada Lovelace" status="online" />
+<MetricGrid ariaLabel="Project health">
+  <Metric label="Completed" value="73%" description="11 of 15 work items">
+    <Progress value={11} max={15} ariaLabel="11 of 15 work items complete" size="sm" />
+  </Metric>
+</MetricGrid>
 <Progress value={7} max={10} label="Review complete" />
 <Timeline entries={releases} />
 ```
@@ -92,11 +97,19 @@ contrast with white initials.
 | `value` | `number` | `0` | Current value |
 | `max` | `number` | `100` | Positive maximum |
 | `label` | `string` | - | Visible and accessible label |
+| `ariaLabel` | `string` | - | Accessible name when a visible label would duplicate surrounding text |
 | `size` | `sm \| md` | `md` | Track size |
-| `variant` | `default \| accent \| warn \| danger` | `default` | Fill tone |
+| `variant` | `default \| accent \| muted \| warn \| danger` | `default` | Fill tone |
 
 Progress normalizes invalid ranges, clamps visual and ARIA values together, contains hostile
 labels, uses CSP-safe width buckets, and disables width transitions under reduced motion.
+
+## Metrics
+
+`MetricGrid` renders a named semantic list with responsive tracks. Pair it with `Metric` for
+compact summary values. `Metric` accepts `label`, `value`, optional `description`, a
+`default | success | warning` tone, and optional child content such as `Progress`. Both surfaces
+contain hostile text without relying on consumer CSS; the grid becomes one column at 420 px.
 
 ## Timeline
 
