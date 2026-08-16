@@ -77,6 +77,7 @@ describe('@wornpage/data-display', () => {
 		expect(chip).toMatch(/button\.worn-chip:hover:not\(\[aria-pressed='true'\]\),\s*a\.worn-chip:hover/u);
 		expect(rootRule).not.toContain('min-height');
 		expect(chip).toContain('touch-action: manipulation;');
+		expect(chip).toContain('outline: 2px dashed var(--worn-chip-focus, var(--cockpit-text, #21322b));');
 		expect(chip).toContain('@media (prefers-reduced-motion: reduce)');
 		expect(chip).toContain('.worn-chip { transition: none; }');
 	});

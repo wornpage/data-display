@@ -139,7 +139,7 @@
 	}
 
 	.worn-chip:focus-visible {
-		outline: 2px dashed var(--cockpit-accent, #0f766e);
+		outline: 2px dashed var(--worn-chip-focus, var(--cockpit-text, #21322b));
 		outline-offset: 2px;
 	}
 
