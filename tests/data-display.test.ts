@@ -11,6 +11,7 @@ const metricGrid = read('MetricGrid');
 const progress = read('Progress');
 const timeline = read('Timeline');
 const timelineContract = readFileSync(new URL('../src/timeline.ts', import.meta.url), 'utf8');
+const readme = readFileSync(new URL('../README.md', import.meta.url), 'utf8');
 
 function relativeLuminance(hex: string) {
 	const channels = hex.match(/[0-9a-f]{2}/giu)!.map((value) => Number.parseInt(value, 16) / 255);
@@ -23,7 +24,7 @@ describe('@wornpage/data-display', () => {
 	it('declares one source-delivered v2 package', () => {
 		const pkg = require('../package.json');
 		expect(pkg.name).toBe('@wornpage/data-display');
-		expect(pkg.version).toBe('0.1.2');
+		expect(pkg.version).toBe('0.1.3');
 		expect(pkg.wornpage).toEqual({ contractVersion: 2, delivery: 'source' });
 		expect(pkg.main).toBe('./src/index.ts');
 	});
@@ -37,16 +38,24 @@ describe('@wornpage/data-display', () => {
 	});
 
 	it('owns semantic metric lists and bounded dashboard values', () => {
-		expect(metricGrid).toContain('<ul class="worn-metric-grid {extraClass}" aria-label={ariaLabel} {...rest}>');
+		expect(metricGrid).toMatch(/<ul[\s\S]*?class="worn-metric-grid \{extraClass\}"[\s\S]*?aria-label=\{ariaLabel\}[\s\S]*?>/u);
 		expect(metricGrid).toContain('{@render children?.()}');
 		expect(metricGrid).toMatch(/grid-template-columns: repeat\(auto-fit, minmax\(min\(100%, 10\.5rem\), 1fr\)\);/u);
-		expect(metricGrid).toMatch(/@media \(max-width: 420px\) \{[\s\S]*?grid-template-columns: minmax\(0, 1fr\);/u);
 		expect(metric).toContain('<li');
 		expect(metric).toContain('<span class="worn-metric-label">{label}</span>');
 		expect(metric).toContain('<strong class="worn-metric-value">{value}</strong>');
 		expect(metric).toContain('overflow-wrap: anywhere;');
 		expect(metric).toContain('font-variant-numeric: tabular-nums;');
 		expect(metric).toContain("tone?: 'default' | 'success' | 'warning';");
+	});
+
+	it('defaults MetricGrid to one mobile column and supports an explicit two-column opt-in', () => {
+		expect(metricGrid).toContain('mobileColumns?: 1 | 2;');
+		expect(metricGrid).toContain('mobileColumns = 1,');
+		expect(metricGrid).toContain('class:is-mobile-two={mobileColumns === 2}');
+		expect(metricGrid).toMatch(/@media \(max-width: 420px\) \{[\s\S]*?\.worn-metric-grid \{ grid-template-columns: minmax\(0, 1fr\); \}[\s\S]*?\.worn-metric-grid\.is-mobile-two \{ grid-template-columns: repeat\(2, minmax\(0, 1fr\)\); \}/u);
+		expect(readme).toContain('| `mobileColumns` | `1 \\| 2` | `1` | Number of columns at viewport widths up to 420 px |');
+		expect(readme).toContain('Set `mobileColumns={2}` when compact metrics should remain paired on narrow screens.');
 	});
 
 	it('contains badges and implements a real compact size', () => {

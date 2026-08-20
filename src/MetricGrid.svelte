@@ -4,18 +4,25 @@
 
 	interface Props extends HTMLAttributes<HTMLUListElement> {
 		ariaLabel: string;
+		mobileColumns?: 1 | 2;
 		children?: Snippet;
 	}
 
 	let {
 		ariaLabel,
+		mobileColumns = 1,
 		children,
 		class: extraClass = '',
 		...rest
 	}: Props = $props();
 </script>
 
-<ul class="worn-metric-grid {extraClass}" aria-label={ariaLabel} {...rest}>
+<ul
+	class="worn-metric-grid {extraClass}"
+	class:is-mobile-two={mobileColumns === 2}
+	aria-label={ariaLabel}
+	{...rest}
+>
 	{@render children?.()}
 </ul>
 
@@ -36,5 +43,6 @@
 
 	@media (max-width: 420px) {
 		.worn-metric-grid { grid-template-columns: minmax(0, 1fr); }
+		.worn-metric-grid.is-mobile-two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 	}
 </style>

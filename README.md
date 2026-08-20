@@ -109,9 +109,20 @@ labels, uses CSP-safe width buckets, and disables width transitions under reduce
 ## Metrics
 
 `MetricGrid` renders a named semantic list with responsive tracks. Pair it with `Metric` for
-compact summary values. `Metric` accepts `label`, `value`, optional `description`, a
+compact summary values.
+
+| MetricGrid prop | Type | Default | Description |
+|-----------------|------|---------|-------------|
+| `ariaLabel` | `string` | required | Accessible list name |
+| `mobileColumns` | `1 \| 2` | `1` | Number of columns at viewport widths up to 420 px |
+| `class` | `string` | empty | Additional root class |
+
+Set `mobileColumns={2}` when compact metrics should remain paired on narrow screens. The default
+stays one column at 420 px and below; wider layouts retain the automatic fitting behavior.
+
+`Metric` accepts `label`, `value`, optional `description`, a
 `default | success | warning` tone, and optional child content such as `Progress`. Both surfaces
-contain hostile text without relying on consumer CSS; the grid becomes one column at 420 px.
+contain hostile text without relying on consumer CSS.
 
 ## Timeline
 
