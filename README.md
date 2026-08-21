@@ -65,6 +65,7 @@ Badge labels wrap within their parent, including unbroken identifiers.
 | `count` | `number` | - | Optional count |
 | `href` | `string` | - | Renders a native link with the complete touch and focus treatment |
 | `pressed` | `boolean` | - | Optional toggle state |
+| `dragOver` | `boolean` | `false` | High-visibility drag-over state on the root |
 | `size` | `sm \| md` | `md` | Visual size |
 | `variant` | `default \| danger` | `default` | Visual tone |
 | `onclick` | `(event: MouseEvent) => void` | - | Renders a native button |

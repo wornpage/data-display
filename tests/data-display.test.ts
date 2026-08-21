@@ -76,6 +76,9 @@ describe('@wornpage/data-display', () => {
 		expect(chip).not.toContain('pressed = false');
 		expect(chip).toContain('aria-pressed={pressed}');
 		expect(chip).toContain('data-pressed={pressed ? \'\' : undefined}');
+		expect(chip).toContain('dragOver?: boolean;');
+		expect(chip).toContain('dragOver = false,');
+		expect(chip.match(/class:is-drag-over=\{dragOver\}/gu)).toHaveLength(3);
 	});
 
 	it('keeps chips bounded, touch-safe, compact when static, and motion-safe', () => {
@@ -89,6 +92,10 @@ describe('@wornpage/data-display', () => {
 		expect(chip).toContain('outline: 2px dashed var(--worn-chip-focus, var(--cockpit-text, #21322b));');
 		expect(chip).toContain('@media (prefers-reduced-motion: reduce)');
 		expect(chip).toContain('.worn-chip { transition: none; }');
+		expect(chip).toContain('.worn-chip.is-drag-over {');
+		expect(chip).toContain('box-shadow: 0 0 0 3px var(--worn-chip-drag-over-ring, #5eead4);');
+		expect(chip).toContain('outline: 2px solid var(--worn-chip-drag-over-outline, #0f766e);');
+		expect(chip).not.toMatch(/\.is-drag-over[\s\S]*?(?:transform|translate|scale|animation):/u);
 	});
 
 	it('owns standalone-safe badge and chip theme fallbacks', () => {

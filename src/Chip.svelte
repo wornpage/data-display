@@ -4,6 +4,7 @@
 		count?: number;
 		href?: string;
 		pressed?: boolean;
+		dragOver?: boolean;
 		size?: 'sm' | 'md';
 		variant?: 'default' | 'danger';
 		class?: string;
@@ -22,6 +23,7 @@
 		count,
 		href,
 		pressed,
+		dragOver = false,
 		size = 'md',
 		variant = 'default',
 		title,
@@ -39,6 +41,7 @@
 		class={classes}
 		class:is-sm={size === 'sm'}
 		class:is-danger={variant === 'danger' && !pressed}
+		class:is-drag-over={dragOver}
 		{href}
 		{title}
 		{...rest}
@@ -55,6 +58,7 @@
 		class={classes}
 		class:is-sm={size === 'sm'}
 		class:is-danger={variant === 'danger' && !pressed}
+		class:is-drag-over={dragOver}
 		aria-pressed={pressed}
 		{title}
 		{...rest}
@@ -71,6 +75,7 @@
 		class={classes}
 		class:is-sm={size === 'sm'}
 		class:is-danger={variant === 'danger' && !pressed}
+		class:is-drag-over={dragOver}
 		data-pressed={pressed ? '' : undefined}
 		{title}
 		{...rest}
@@ -161,6 +166,15 @@
 		background: var(--cockpit-bg, #f5f0e8);
 		border-color: var(--cockpit-border, #d0cac1);
 		color: var(--cockpit-text, #21322b);
+	}
+
+	.worn-chip.is-drag-over {
+		background: var(--worn-chip-drag-over-bg, #d9f5ed);
+		border-color: var(--worn-chip-drag-over-border, #0f766e);
+		box-shadow: 0 0 0 3px var(--worn-chip-drag-over-ring, #5eead4);
+		color: var(--worn-chip-drag-over-text, #123c35);
+		outline: 2px solid var(--worn-chip-drag-over-outline, #0f766e);
+		outline-offset: 2px;
 	}
 
 	.worn-chip.is-danger {
