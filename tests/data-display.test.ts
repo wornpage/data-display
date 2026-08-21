@@ -86,7 +86,8 @@ describe('@wornpage/data-display', () => {
 		expect(chip).toContain('max-inline-size: 100%;');
 		expect(chip).toMatch(/button\.worn-chip,\s*a\.worn-chip \{[\s\S]*?min-height: 44px;/u);
 		expect(chip).toContain('a.worn-chip { text-decoration: none; }');
-		expect(chip).toMatch(/button\.worn-chip:hover:not\(\[aria-pressed='true'\]\),\s*a\.worn-chip:hover/u);
+		expect(chip).toMatch(/@media \(hover: hover\) and \(pointer: fine\) \{[\s\S]*?button\.worn-chip:hover:not\(\[aria-pressed='true'\]\),\s*a\.worn-chip:hover/u);
+		expect(chip).not.toContain("\n\tbutton.worn-chip:hover:not([aria-pressed='true']),");
 		expect(rootRule).not.toContain('min-height');
 		expect(chip).toContain('touch-action: manipulation;');
 		expect(chip).toContain('outline: 2px dashed var(--worn-chip-focus, var(--cockpit-text, #21322b));');
