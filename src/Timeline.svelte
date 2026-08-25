@@ -193,7 +193,7 @@
 	}
 
 	.worn-timeline-card-link:focus-visible {
-		outline: 2px solid var(--cockpit-accent, #23796d);
+		outline: 2px solid var(--worn-timeline-focus, var(--cockpit-focus, var(--cockpit-text, currentColor)));
 		outline-offset: 2px;
 	}
 
