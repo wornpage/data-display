@@ -105,8 +105,15 @@ contrast with white initials.
 | `size` | `sm \| md` | `md` | Track size |
 | `variant` | `default \| accent \| muted \| warn \| danger` | `default` | Fill tone |
 
-Progress normalizes invalid ranges, clamps visual and ARIA values together, contains hostile
-labels, uses CSP-safe width buckets, and disables width transitions under reduced motion.
+Progress normalizes invalid ranges, clamps visual and ARIA values together, and contains hostile
+labels. It paints the exact clamped fraction without an inline style, using a decorative CSP-safe
+SVG width attribute instead of rounded bucket classes. Default and accent fills retain their theme
+hue while maintaining at least 3:1 fill-to-track contrast across supported themes, and width
+transitions stop under reduced motion.
+
+Use `--worn-progress-track` and `--worn-progress-fill` to override the shared visual. The accent,
+muted, warning, and danger variants additionally accept `--worn-progress-accent-fill`,
+`--worn-progress-muted-fill`, `--worn-progress-warn-fill`, and `--worn-progress-danger-fill`.
 
 ## Metrics
 
