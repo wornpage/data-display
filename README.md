@@ -155,7 +155,8 @@ exceed the default readable width.
 
 Timeline exposes native ordered-list, list-item, article, heading, and time semantics. Decorative
 tracks stay out of the accessibility tree. Hostile labels and entries wrap inside the component,
-compact content stacks below its date and stops at three lines on narrow screens, theme tokens have standalone fallbacks, and entry motion
-and linked-card transitions are disabled under reduced motion. Use `titleContent` for structured
+compact content stacks below its date and stops at three lines on narrow screens, theme tokens have
+standalone fallbacks, and rows render in their final position without presentation-only entrance
+motion. Linked-card transitions are disabled under reduced motion. Use `titleContent` for structured
 inline content such as mention links; keep `entry.href` empty when that content is interactive so
 the component never creates nested links.

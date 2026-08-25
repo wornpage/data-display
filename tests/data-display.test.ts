@@ -24,7 +24,7 @@ describe('@wornpage/data-display', () => {
 	it('declares one source-delivered v2 package', () => {
 		const pkg = require('../package.json');
 		expect(pkg.name).toBe('@wornpage/data-display');
-		expect(pkg.version).toBe('0.1.6');
+		expect(pkg.version).toBe('0.1.7');
 		expect(pkg.wornpage).toEqual({ contractVersion: 2, delivery: 'source' });
 		expect(pkg.main).toBe('./src/index.ts');
 	});
@@ -240,14 +240,14 @@ describe('@wornpage/data-display', () => {
 		expect(timeline).toContain('max-inline-size: var(--worn-timeline-max-inline-size, 40rem);');
 	});
 
-	it('owns date formatting, theme fallbacks, and motion preferences', async () => {
+	it('owns date formatting, theme fallbacks, and presentation-static rows', async () => {
 		const { formatTimelineDate } = await import('../src/timeline.ts');
 		expect(formatTimelineDate('2026-08-14')).toBe('Aug 14, 2026');
 		expect(formatTimelineDate('not-a-date')).toBe('not-a-date');
 		expect(formatTimelineDate('x'.repeat(80))).toHaveLength(40);
 		expect(timeline).toContain('var(--cockpit-text, #26352f)');
 		expect(timeline).toContain('var(--cockpit-border, #d4cec5)');
-		expect(timeline).toContain('.worn-timeline-entry { animation: none; }');
+		expect(timeline).not.toMatch(/\banimation(?:-delay)?:|@keyframes/u);
 		expect(timeline).toContain('.worn-timeline-card-link { transition: none; }');
 	});
 });

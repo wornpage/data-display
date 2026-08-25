@@ -121,7 +121,6 @@
 	}
 
 	.worn-timeline-entry {
-		animation: worn-timeline-settle 0.26s var(--demo-ease-spring, ease-out) backwards;
 		box-sizing: border-box;
 		display: flex;
 		gap: 16px;
@@ -129,14 +128,6 @@
 		min-block-size: 60px;
 		min-inline-size: 0;
 	}
-
-	.worn-timeline > .worn-timeline-entry:nth-child(2) { animation-delay: 22ms; }
-	.worn-timeline > .worn-timeline-entry:nth-child(3) { animation-delay: 44ms; }
-	.worn-timeline > .worn-timeline-entry:nth-child(4) { animation-delay: 66ms; }
-	.worn-timeline > .worn-timeline-entry:nth-child(5) { animation-delay: 88ms; }
-	.worn-timeline > .worn-timeline-entry:nth-child(6) { animation-delay: 110ms; }
-	.worn-timeline > .worn-timeline-entry:nth-child(7) { animation-delay: 132ms; }
-	.worn-timeline > .worn-timeline-entry:nth-child(8) { animation-delay: 154ms; }
 
 	.worn-timeline-marker {
 		align-items: center;
@@ -284,11 +275,6 @@
 		overflow-wrap: anywhere;
 	}
 
-	@keyframes worn-timeline-settle {
-		from { opacity: 0.72; transform: translateY(4px); }
-		to { opacity: 1; transform: translateY(0); }
-	}
-
 	@media (max-width: 420px) {
 		.worn-timeline-entry { gap: 12px; }
 		.worn-timeline.is-compact .worn-timeline-title {
@@ -308,7 +294,6 @@
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.worn-timeline-entry { animation: none; }
 		.worn-timeline-card-link { transition: none; }
 	}
 </style>
