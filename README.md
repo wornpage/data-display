@@ -140,9 +140,10 @@ contain hostile text without relying on consumer CSS.
 
 `TimelineEntry` requires `title`; `iter`, `date`, `description`, `href`, and `meta` are optional.
 Entries with `iter` retain the numbered release badge. Entries with `href` render as native linked
-cards with a 44px target and visible keyboard focus; entries without `href` remain articles. Set
-`--worn-timeline-max-inline-size` on a container when a product timeline should exceed the default
-readable width.
+cards with a 44px target and visible keyboard focus; entries without `href` remain articles. Use
+`--worn-timeline-focus` to override the linked-card focus color; it otherwise follows the host focus
+or text token. Set `--worn-timeline-max-inline-size` on a container when a product timeline should
+exceed the default readable width.
 
 Timeline exposes native ordered-list, list-item, article, heading, and time semantics. Decorative
 tracks stay out of the accessibility tree. Hostile labels and entries wrap inside the component,
