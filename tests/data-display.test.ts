@@ -24,7 +24,7 @@ describe('@wornpage/data-display', () => {
 	it('declares one source-delivered v2 package', () => {
 		const pkg = require('../package.json');
 		expect(pkg.name).toBe('@wornpage/data-display');
-		expect(pkg.version).toBe('0.1.4');
+		expect(pkg.version).toBe('0.1.5');
 		expect(pkg.wornpage).toEqual({ contractVersion: 2, delivery: 'source' });
 		expect(pkg.main).toBe('./src/index.ts');
 	});
@@ -97,6 +97,18 @@ describe('@wornpage/data-display', () => {
 		expect(chip).toContain('box-shadow: 0 0 0 3px var(--worn-chip-drag-over-ring, #5eead4);');
 		expect(chip).toContain('outline: 2px solid var(--worn-chip-drag-over-outline, #0f766e);');
 		expect(chip).not.toMatch(/\.is-drag-over[\s\S]*?(?:transform|translate|scale|animation):/u);
+	});
+
+	it('keeps the complete chip label visible inside its bounded surface', () => {
+		const rootRule = chip.match(/\n\t\.worn-chip \{([\s\S]*?)\n\t\}/u)?.[1] ?? '';
+		const labelRule = chip.match(/\.worn-chip-label \{([\s\S]*?)\n\t\}/u)?.[1] ?? '';
+		expect(rootRule).toContain('inline-size: max-content;');
+		expect(labelRule).toContain('min-inline-size: 0;');
+		expect(labelRule).toContain('overflow-wrap: anywhere;');
+		expect(labelRule).toContain('white-space: normal;');
+		expect(labelRule).not.toContain('overflow: hidden;');
+		expect(labelRule).not.toContain('text-overflow: ellipsis;');
+		expect(readme).toContain('Complete labels wrap within the Chip instead of being hidden behind an ellipsis.');
 	});
 
 	it('owns standalone-safe badge and chip theme fallbacks', () => {

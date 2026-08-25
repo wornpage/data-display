@@ -75,8 +75,9 @@ Badge labels wrap within their parent, including unbroken identifiers.
 
 With `href`, Chip renders a native 44px link. With `onclick`, it renders a native 44px button;
 supplying `pressed` adds toggle semantics, while omitting it keeps one-shot commands as ordinary
-buttons. Without either prop, Chip remains a compact display-only span. Long labels stay contained
-and transitions stop under reduced motion.
+buttons. Complete labels wrap within the Chip instead of being hidden behind an ellipsis. Without
+either prop, Chip remains a compact display-only span. Long labels stay contained and transitions
+stop under reduced motion.
 
 ## Avatar
 

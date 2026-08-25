@@ -101,6 +101,7 @@
 		font-size: 13px;
 		font-weight: 560;
 		gap: 6px;
+		inline-size: max-content;
 		line-height: 1.2;
 		max-inline-size: 100%;
 		min-inline-size: 0;
@@ -110,9 +111,8 @@
 
 	.worn-chip-label {
 		min-inline-size: 0;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
+		overflow-wrap: anywhere;
+		white-space: normal;
 	}
 
 	button.worn-chip,
