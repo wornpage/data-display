@@ -24,7 +24,7 @@ describe('@wornpage/data-display', () => {
 	it('declares one source-delivered v2 package', () => {
 		const pkg = require('../package.json');
 		expect(pkg.name).toBe('@wornpage/data-display');
-		expect(pkg.version).toBe('0.1.5');
+		expect(pkg.version).toBe('0.1.6');
 		expect(pkg.wornpage).toEqual({ contractVersion: 2, delivery: 'source' });
 		expect(pkg.main).toBe('./src/index.ts');
 	});
@@ -159,10 +159,24 @@ describe('@wornpage/data-display', () => {
 		expect(progress).toContain('const safeValue = $derived(Number.isFinite(value) ? Math.min(safeMax, Math.max(0, value)) : 0);');
 		expect(progress).toContain('aria-valuenow={safeValue}');
 		expect(progress).toContain('aria-valuemax={safeMax}');
-		expect(progress).toContain('const bucket = $derived(Math.round(pct / 5) * 5);');
 		expect(progress).toContain('aria-label={ariaLabel || label || `${Math.round(pct)}%`}');
 		expect(progress).toContain("variant?: 'default' | 'accent' | 'muted' | 'warn' | 'danger';");
-		expect(progress).toContain('.worn-progress.is-muted .worn-progress-fill { background: var(--cockpit-text-muted); }');
+	});
+
+	it('paints the exact safe percentage with a CSP-safe all-theme visual', () => {
+		expect(progress).toContain('<svg class="worn-progress-track" aria-hidden="true" focusable="false">');
+		expect(progress).toContain('<rect class="worn-progress-fill" width={`${pct}%`} height="100%"></rect>');
+		expect(progress).not.toContain('const bucket = $derived');
+		expect(progress).not.toMatch(/worn-progress-fill-\d/u);
+		expect(progress).not.toContain('style:width');
+		expect(progress).toContain('--_worn-progress-default-fill: var(--cockpit-focus, var(--cockpit-text, #21322b));');
+		expect(progress).toContain('fill: var(--_worn-progress-active-fill, var(--worn-progress-fill, var(--_worn-progress-default-fill)));');
+		expect(progress).toContain('color-mix(in srgb, var(--cockpit-accent, #0f766e) 55%, var(--cockpit-text, #21322b))');
+		expect(progress).toContain('.worn-progress.is-muted { --_worn-progress-active-fill: var(--worn-progress-muted-fill, var(--cockpit-text-muted, #506058)); }');
+		expect(progress).toContain('.worn-progress.is-warn { --_worn-progress-active-fill: var(--worn-progress-warn-fill, var(--cockpit-warning-text, #a85200)); }');
+		expect(progress).toContain('.worn-progress.is-danger { --_worn-progress-active-fill: var(--worn-progress-danger-fill, var(--cockpit-danger-text, #991b1b)); }');
+		expect(readme).toContain('exact clamped fraction without an inline style');
+		expect(readme).toContain('`--worn-progress-fill`');
 	});
 
 	it('contains progress labels and stops width motion when requested', () => {

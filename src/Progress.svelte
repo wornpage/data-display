@@ -20,10 +20,9 @@
 	const safeMax = $derived(Number.isFinite(max) && max > 0 ? max : 100);
 	const safeValue = $derived(Number.isFinite(value) ? Math.min(safeMax, Math.max(0, value)) : 0);
 	const pct = $derived((safeValue / safeMax) * 100);
-	const bucket = $derived(Math.round(pct / 5) * 5);
 </script>
 
-<div
+	<div
 	class="worn-progress"
 	class:is-sm={size === 'sm'}
 	class:is-accent={variant === 'accent'}
@@ -36,9 +35,9 @@
 	aria-valuemax={safeMax}
 	aria-label={ariaLabel || label || `${Math.round(pct)}%`}
 >
-	<div class="worn-progress-track">
-		<div class="worn-progress-fill worn-progress-fill-{bucket}"></div>
-	</div>
+	<svg class="worn-progress-track" aria-hidden="true" focusable="false">
+		<rect class="worn-progress-fill" width={`${pct}%`} height="100%"></rect>
+	</svg>
 	{#if label}
 		<span class="worn-progress-label">{label} — {Math.round(pct)}%</span>
 	{/if}
@@ -46,6 +45,7 @@
 
 <style>
 	.worn-progress {
+		--_worn-progress-default-fill: var(--cockpit-focus, var(--cockpit-text, #21322b));
 		box-sizing: border-box;
 		display: grid;
 		gap: 4px;
@@ -56,7 +56,9 @@
 	}
 
 	.worn-progress-track {
-		background: var(--cockpit-border);
+		display: block;
+		inline-size: 100%;
+		background: var(--worn-progress-track, var(--cockpit-border, #d8d2c8));
 		border-radius: 4px;
 		height: 8px;
 		overflow: hidden;
@@ -68,17 +70,20 @@
 	}
 
 	.worn-progress-fill {
-		background: var(--cockpit-accent);
-		border-radius: inherit;
-		height: 100%;
-		min-inline-size: 0;
+		fill: var(--_worn-progress-active-fill, var(--worn-progress-fill, var(--_worn-progress-default-fill)));
 		transition: width 0.4s ease;
 	}
 
-	.worn-progress.is-accent .worn-progress-fill { background: var(--cockpit-accent); }
-	.worn-progress.is-muted .worn-progress-fill { background: var(--cockpit-text-muted); }
-	.worn-progress.is-warn .worn-progress-fill { background: var(--cockpit-warning-text); }
-	.worn-progress.is-danger .worn-progress-fill { background: var(--cockpit-danger-text); }
+	.worn-progress.is-accent { --_worn-progress-active-fill: var(--worn-progress-accent-fill, var(--worn-progress-fill, var(--_worn-progress-default-fill))); }
+	.worn-progress.is-muted { --_worn-progress-active-fill: var(--worn-progress-muted-fill, var(--cockpit-text-muted, #506058)); }
+	.worn-progress.is-warn { --_worn-progress-active-fill: var(--worn-progress-warn-fill, var(--cockpit-warning-text, #a85200)); }
+	.worn-progress.is-danger { --_worn-progress-active-fill: var(--worn-progress-danger-fill, var(--cockpit-danger-text, #991b1b)); }
+
+	@supports (color: color-mix(in srgb, black, white)) {
+		.worn-progress {
+			--_worn-progress-default-fill: color-mix(in srgb, var(--cockpit-accent, #0f766e) 55%, var(--cockpit-text, #21322b));
+		}
+	}
 
 	.worn-progress-label {
 		color: var(--cockpit-text-muted);
@@ -87,28 +92,6 @@
 		min-inline-size: 0;
 		overflow-wrap: anywhere;
 	}
-
-	.worn-progress-fill-0 { width: 0%; }
-	.worn-progress-fill-5 { width: 5%; }
-	.worn-progress-fill-10 { width: 10%; }
-	.worn-progress-fill-15 { width: 15%; }
-	.worn-progress-fill-20 { width: 20%; }
-	.worn-progress-fill-25 { width: 25%; }
-	.worn-progress-fill-30 { width: 30%; }
-	.worn-progress-fill-35 { width: 35%; }
-	.worn-progress-fill-40 { width: 40%; }
-	.worn-progress-fill-45 { width: 45%; }
-	.worn-progress-fill-50 { width: 50%; }
-	.worn-progress-fill-55 { width: 55%; }
-	.worn-progress-fill-60 { width: 60%; }
-	.worn-progress-fill-65 { width: 65%; }
-	.worn-progress-fill-70 { width: 70%; }
-	.worn-progress-fill-75 { width: 75%; }
-	.worn-progress-fill-80 { width: 80%; }
-	.worn-progress-fill-85 { width: 85%; }
-	.worn-progress-fill-90 { width: 90%; }
-	.worn-progress-fill-95 { width: 95%; }
-	.worn-progress-fill-100 { width: 100%; }
 
 	@media (prefers-reduced-motion: reduce) {
 		.worn-progress-fill { transition: none; }

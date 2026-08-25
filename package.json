@@ -1,6 +1,6 @@
 {
   "name": "@wornpage/data-display",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Svelte 5 badges, chips, avatars, metrics, progress indicators, and timelines for compact application workflows",
   "type": "module",
   "wornpage": {
