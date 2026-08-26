@@ -138,8 +138,8 @@
 	}
 
 	.worn-timeline-dot {
-		background: var(--cockpit-border, #d4cec5);
-		border: 2px solid var(--cockpit-border, #d4cec5);
+		background: var(--worn-border, #d4cec5);
+		border: 2px solid var(--worn-border, #d4cec5);
 		border-radius: 50%;
 		box-sizing: border-box;
 		block-size: 12px;
@@ -149,12 +149,12 @@
 	}
 
 	.worn-timeline-dot-latest {
-		background: var(--cockpit-accent, #23796d);
-		border-color: var(--cockpit-accent, #23796d);
+		background: var(--worn-accent, #23796d);
+		border-color: var(--worn-accent, #23796d);
 	}
 
 	.worn-timeline-line {
-		background: var(--cockpit-border, #d4cec5);
+		background: var(--worn-border, #d4cec5);
 		flex: 1;
 		inline-size: 2px;
 		min-block-size: 8px;
@@ -162,7 +162,7 @@
 
 	.worn-timeline-card {
 		box-sizing: border-box;
-		color: var(--cockpit-text, #26352f);
+		color: var(--worn-text, #26352f);
 		flex: 1 1 auto;
 		font-family: var(--font-sans, system-ui, sans-serif);
 		max-inline-size: 100%;
@@ -172,7 +172,7 @@
 	}
 
 	.worn-timeline-card-link {
-		border-radius: var(--cockpit-radius-sm, 6px);
+		border-radius: var(--worn-radius-sm, 6px);
 		min-block-size: 44px;
 		text-decoration: none;
 		touch-action: manipulation;
@@ -180,11 +180,11 @@
 	}
 
 	.worn-timeline-card-link:hover {
-		background: var(--cockpit-bg-secondary, #efede7);
+		background: var(--worn-bg-secondary, #efede7);
 	}
 
 	.worn-timeline-card-link:focus-visible {
-		outline: 2px solid var(--worn-timeline-focus, var(--cockpit-focus, var(--cockpit-text, currentColor)));
+		outline: 2px solid var(--worn-timeline-focus, var(--worn-focus, var(--worn-text, currentColor)));
 		outline-offset: 2px;
 	}
 
@@ -239,7 +239,7 @@
 	}
 
 	.worn-timeline-date {
-		color: var(--cockpit-text-muted, #65746d);
+		color: var(--worn-text-muted, #65746d);
 		font-size: 12px;
 		font-variant-numeric: tabular-nums;
 		max-inline-size: 100%;
@@ -248,7 +248,7 @@
 	}
 
 	.worn-timeline-title {
-		color: var(--cockpit-text, #26352f);
+		color: var(--worn-text, #26352f);
 		font-size: 15px;
 		font-weight: 600;
 		letter-spacing: 0;
@@ -257,7 +257,7 @@
 	}
 
 	.worn-timeline-desc {
-		color: var(--cockpit-text-secondary, #4e5f57);
+		color: var(--worn-text-secondary, #4e5f57);
 		font-size: 13px;
 		letter-spacing: 0;
 		line-height: 1.55;
@@ -266,7 +266,7 @@
 	}
 
 	.worn-timeline-entry-meta {
-		color: var(--cockpit-text-muted, #65746d);
+		color: var(--worn-text-muted, #65746d);
 		display: block;
 		font-size: 12px;
 		margin-block-start: 4px;

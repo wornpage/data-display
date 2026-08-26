@@ -35,8 +35,8 @@
 
 <style>
 	.worn-metric {
-		background: var(--cockpit-surface, #fdfbf7);
-		border: 1px solid var(--cockpit-border, #d4cec5);
+		background: var(--worn-surface, #fdfbf7);
+		border: 1px solid var(--worn-border, #d4cec5);
 		border-radius: 6px;
 		box-sizing: border-box;
 		display: flex;
@@ -48,11 +48,11 @@
 		padding: 14px 16px;
 	}
 
-	.worn-metric.is-success { border-color: var(--cockpit-success-border, #4f8065); }
-	.worn-metric.is-warning { border-color: var(--cockpit-warning-border, #b88721); }
+	.worn-metric.is-success { border-color: var(--worn-success-border, #4f8065); }
+	.worn-metric.is-warning { border-color: var(--worn-warning-border, #b88721); }
 
 	.worn-metric-label {
-		color: var(--cockpit-text-secondary, #3d5148);
+		color: var(--worn-text-secondary, #3d5148);
 		font-size: 13px;
 		font-weight: 600;
 		line-height: 1.35;
@@ -60,7 +60,7 @@
 	}
 
 	.worn-metric-value {
-		color: var(--cockpit-text, #26352f);
+		color: var(--worn-text, #26352f);
 		font-size: 28px;
 		font-variant-numeric: tabular-nums;
 		font-weight: 650;
@@ -69,7 +69,7 @@
 	}
 
 	.worn-metric-description {
-		color: var(--cockpit-text-muted, #506058);
+		color: var(--worn-text-muted, #506058);
 		font-size: 13px;
 		font-weight: 450;
 		line-height: 1.4;

@@ -125,7 +125,7 @@
 
 	.worn-avatar-dot {
 		background: #22c55e;
-		border: 2px solid var(--cockpit-bg, #fff);
+		border: 2px solid var(--worn-bg, #fff);
 		border-radius: 50%;
 		bottom: 0;
 		height: 8px;

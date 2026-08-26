@@ -45,7 +45,7 @@
 
 <style>
 	.worn-progress {
-		--_worn-progress-default-fill: var(--cockpit-focus, var(--cockpit-text, #21322b));
+		--_worn-progress-default-fill: var(--worn-focus, var(--worn-text, #21322b));
 		box-sizing: border-box;
 		display: grid;
 		gap: 4px;
@@ -58,7 +58,7 @@
 	.worn-progress-track {
 		display: block;
 		inline-size: 100%;
-		background: var(--worn-progress-track, var(--cockpit-border, #d8d2c8));
+		background: var(--worn-progress-track, var(--worn-border, #d8d2c8));
 		border-radius: 4px;
 		height: 8px;
 		overflow: hidden;
@@ -75,18 +75,18 @@
 	}
 
 	.worn-progress.is-accent { --_worn-progress-active-fill: var(--worn-progress-accent-fill, var(--worn-progress-fill, var(--_worn-progress-default-fill))); }
-	.worn-progress.is-muted { --_worn-progress-active-fill: var(--worn-progress-muted-fill, var(--cockpit-text-muted, #506058)); }
-	.worn-progress.is-warn { --_worn-progress-active-fill: var(--worn-progress-warn-fill, var(--cockpit-warning-text, #a85200)); }
-	.worn-progress.is-danger { --_worn-progress-active-fill: var(--worn-progress-danger-fill, var(--cockpit-danger-text, #991b1b)); }
+	.worn-progress.is-muted { --_worn-progress-active-fill: var(--worn-progress-muted-fill, var(--worn-text-muted, #506058)); }
+	.worn-progress.is-warn { --_worn-progress-active-fill: var(--worn-progress-warn-fill, var(--worn-warning-text, #a85200)); }
+	.worn-progress.is-danger { --_worn-progress-active-fill: var(--worn-progress-danger-fill, var(--worn-danger-text, #991b1b)); }
 
 	@supports (color: color-mix(in srgb, black, white)) {
 		.worn-progress {
-			--_worn-progress-default-fill: color-mix(in srgb, var(--cockpit-accent, #0f766e) 55%, var(--cockpit-text, #21322b));
+			--_worn-progress-default-fill: color-mix(in srgb, var(--worn-accent, #0f766e) 55%, var(--worn-text, #21322b));
 		}
 	}
 
 	.worn-progress-label {
-		color: var(--cockpit-text-muted);
+		color: var(--worn-text-muted);
 		font-family: var(--font-typewriter);
 		font-size: 11px;
 		min-inline-size: 0;
