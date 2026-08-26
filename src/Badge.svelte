@@ -75,7 +75,7 @@
 	}
 
 	.worn-badge.is-muted {
-		background: var(--worn-border, #e2ddd5);
+		background: var(--worn-bg-secondary, #efede7);
 		color: var(--worn-text-muted, #506058);
 	}
 </style>

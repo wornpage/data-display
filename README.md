@@ -56,6 +56,7 @@ bun add @wornpage/data-display
 | `title` | `string` | - | Native title |
 
 Badge labels wrap within their parent, including unbroken identifiers.
+Muted badges pair `--worn-text-muted` with `--worn-bg-secondary`; override them together with colors that preserve small-text contrast.
 
 ## Chip
 

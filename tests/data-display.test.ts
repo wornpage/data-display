@@ -112,15 +112,18 @@ describe('@wornpage/data-display', () => {
 	});
 
 	it('owns standalone-safe badge and chip theme fallbacks', () => {
+		const mutedBadgeRule = badge.match(/\.worn-badge\.is-muted \{([\s\S]*?)\n\t\}/u)?.[1] ?? '';
 		expect(badge).toContain('var(--worn-bg-secondary, #efede7)');
 		expect(badge).toContain('var(--worn-warning-text, #5f4300)');
 		expect(badge).toContain('var(--worn-accent-text, #fff)');
+		expect(mutedBadgeRule).toContain('background: var(--worn-bg-secondary, #efede7);');
+		expect(mutedBadgeRule).not.toContain('var(--worn-border');
 		expect(chip).toContain('var(--worn-surface, #fdfbf7)');
 		expect(chip).toContain('var(--worn-text-muted, #506058)');
 		expect(chip).toContain('var(--worn-danger-text, #7a1a14)');
 		const pairs = [
 			['#21322b', '#efede7'],
-			['#506058', '#e2ddd5'],
+			['#506058', '#efede7'],
 			['#ffffff', '#0f766e'],
 			['#5f4300', '#fff7ed'],
 			['#506058', '#fdfbf7'],
@@ -131,6 +134,7 @@ describe('@wornpage/data-display', () => {
 			const dark = Math.min(relativeLuminance(foreground), relativeLuminance(background));
 			expect((light + 0.05) / (dark + 0.05)).toBeGreaterThanOrEqual(4.5);
 		}
+		expect(readme).toContain('Muted badges pair `--worn-text-muted` with `--worn-bg-secondary`; override them together with colors that preserve small-text contrast.');
 	});
 
 	it('falls back from broken avatar images before or after hydration without a duplicate accessible name', () => {
