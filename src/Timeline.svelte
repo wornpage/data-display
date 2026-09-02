@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import Badge from './Badge.svelte';
+	import { assertSafeHref } from './safe-href';
 	import {
 		formatTimelineDate,
 		type TimelineDateFormatter,
@@ -58,10 +59,6 @@
 		return cleanText(value).slice(0, 24);
 	}
 
-	function cleanHref(value: unknown): string {
-		return cleanText(value).slice(0, 2048);
-	}
-
 	function entryLabel(iteration: string, title: string): string {
 		if (!iteration) return title;
 		return title ? `Iteration ${iteration}: ${title}` : `Iteration ${iteration}`;
@@ -74,7 +71,7 @@
 		{@const date = cleanDate(entry?.date)}
 		{@const title = cleanText(entry?.title)}
 		{@const description = cleanText(entry?.description)}
-		{@const href = cleanHref(entry?.href)}
+		{@const href = entry?.href === undefined ? undefined : assertSafeHref(entry.href)}
 		{@const meta = cleanText(entry?.meta)}
 		<li class="worn-timeline-entry">
 			<div class="worn-timeline-marker" aria-hidden="true">
@@ -85,7 +82,7 @@
 				this={href ? 'a' : 'article'}
 				class="worn-timeline-card"
 				class:worn-timeline-card-link={Boolean(href)}
-				href={href || undefined}
+				href={href}
 				aria-label={entryLabel(iteration, title) || undefined}
 			>
 				{#if iteration || date}

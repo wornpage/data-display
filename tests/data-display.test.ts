@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'bun:test';
 import { readFileSync } from 'node:fs';
 import { compile } from 'svelte/compiler';
+import { assertSafeHref } from '../src/safe-href';
 
 const read = (name: string) => readFileSync(new URL(`../src/${name}.svelte`, import.meta.url), 'utf8');
 const avatar = read('Avatar');
@@ -68,10 +69,10 @@ describe('@wornpage/data-display', () => {
 	});
 
 	it('keeps chip command and toggle semantics explicit', () => {
-		expect(chip).toContain('{#if href}');
+		expect(chip).toContain('{#if safeHref}');
 		expect(chip).toContain('{:else if onclick}');
 		expect(chip).toContain('<a');
-		expect(chip).toContain('{href}');
+		expect(chip).toContain('href={safeHref}');
 		expect(chip).toContain('\t\tpressed,');
 		expect(chip).not.toContain('pressed = false');
 		expect(chip).toContain('aria-pressed={pressed}');
@@ -195,7 +196,7 @@ describe('@wornpage/data-display', () => {
 		expect(timeline).toContain('<ol class="worn-timeline {extraClass}" class:is-compact={density === \'compact\'} aria-label={ariaLabel} {...rest}>');
 		expect(timeline).toContain('<li class="worn-timeline-entry">');
 		expect(timeline).toContain("this={href ? 'a' : 'article'}");
-		expect(timeline).toContain('href={href || undefined}');
+		expect(timeline).toContain('href={href}');
 		expect(timeline).toContain('<time datetime={date} class="worn-timeline-date">');
 		expect(timeline).toContain('<svelte:element this={headingTag} class="worn-timeline-title">');
 		expect(timeline).toContain('class="worn-timeline-marker" aria-hidden="true"');
@@ -253,5 +254,30 @@ describe('@wornpage/data-display', () => {
 		expect(timeline).toContain('var(--worn-border, #d4cec5)');
 		expect(timeline).not.toMatch(/\banimation(?:-delay)?:|@keyframes/u);
 		expect(timeline).toContain('.worn-timeline-card-link { transition: none; }');
+	});
+
+	it('accepts only relative and explicitly supported link destinations', () => {
+		for (const href of [
+			'/projects', './settings', '../home', 'projects/42', '?filter=open', '#details',
+			'https://example.com/path',
+			'mailto:security@example.com', 'tel:+15551234567'
+		]) {
+			expect(assertSafeHref(href)).toBe(href);
+		}
+		expect(chip).toContain('href === undefined ? undefined : assertSafeHref(href)');
+		expect(timeline).toContain('entry?.href === undefined ? undefined : assertSafeHref(entry.href)');
+		expect(timeline).not.toContain('function cleanHref');
+	});
+
+	it('rejects executable, ambiguous, and control-obfuscated link destinations', () => {
+		for (const href of [
+			'', ' javascript:alert(1)', 'javascript:alert(1)', 'JAVASCRIPT:alert(1)',
+			'java\nscript:alert(1)', 'data:text/html,boom', 'vbscript:msgbox(1)',
+			'http://localhost:3000', 'ftp://example.com/file', '//example.com/path',
+			'\\\\example.com\\path', 'https://example.com/a b',
+			'java\u200bscript:alert(1)', 'https://example.com/\u0000path'
+		]) {
+			expect(() => assertSafeHref(href)).toThrow(TypeError);
+		}
 	});
 });
