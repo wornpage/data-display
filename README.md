@@ -7,7 +7,7 @@ own theme tokens and CSP policy.
 <!-- wornpage-delivery:v2 source -->
 ## Delivery
 
-`src/` is the canonical implementation and package runtime. This package is source-only; it does not ship a generated `dist/` directory.
+`src/` is the canonical implementation and published runtime. This package is source-only; it does not ship a generated `dist/` directory.
 
 Repository text is checked out as LF through `.gitattributes`, so generated output is byte-stable across Windows and Linux.
 
