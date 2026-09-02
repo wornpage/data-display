@@ -7,18 +7,19 @@ own theme tokens and CSP policy.
 <!-- wornpage-delivery:v2 source -->
 ## Delivery
 
-`src/` is the canonical implementation and published runtime. This package is source-only; it does not ship a generated `dist/` directory.
+`src/` is the canonical implementation and package runtime. This package is source-only; it does not ship a generated `dist/` directory.
 
 Repository text is checked out as LF through `.gitattributes`, so generated output is byte-stable across Windows and Linux.
 
 The shared [component delivery contract](https://github.com/wornpage/cli/blob/master/docs/component-delivery.md) checks this declaration, package exports, packed files, and generated output on every push and pull request.
 <!-- /wornpage-delivery -->
 
-## Install
+## Source use
 
-```sh
-bun add @wornpage/data-display
-```
+This package is not published to npm. Check out this repository at a reviewed commit, install its
+dependencies from `bun.lock`, and consume `src/index.ts` through a local workspace alias. The
+`@wornpage/data-display` imports below assume that local alias; they do not resolve from the public
+npm registry.
 
 ## Usage
 
@@ -64,7 +65,7 @@ Muted badges pair `--worn-text-muted` with `--worn-bg-secondary`; override them 
 |------|------|---------|-------------|
 | `label` | `string` | required | Visible label |
 | `count` | `number` | - | Optional count |
-| `href` | `string` | - | Renders a native link with the complete touch and focus treatment |
+| `href` | `string` | - | Renders a validated native link with the complete touch and focus treatment |
 | `pressed` | `boolean` | - | Optional toggle state |
 | `dragOver` | `boolean` | `false` | High-visibility drag-over state on the root |
 | `size` | `sm \| md` | `md` | Visual size |
@@ -79,6 +80,10 @@ supplying `pressed` adds toggle semantics, while omitting it keeps one-shot comm
 buttons. Complete labels wrap within the Chip instead of being hidden behind an ellipsis. Without
 either prop, Chip remains a compact display-only span. Long labels stay contained and transitions
 stop under reduced motion.
+
+Chip and Timeline destinations may be relative or use `https:`, `mailto:`, or `tel:`. Empty values,
+network-path references, backslashes, separator/control/format characters, plain HTTP, and every
+other scheme are rejected with a `TypeError`; omit `href` for a non-link surface.
 
 ## Avatar
 

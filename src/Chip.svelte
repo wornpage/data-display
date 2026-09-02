@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { assertSafeHref } from './safe-href';
+
 	interface Props {
 		label: string;
 		count?: number;
@@ -34,15 +36,16 @@
 	}: Props = $props();
 
 	const classes = $derived(`worn-chip ${extraClass}`);
+	const safeHref = $derived(href === undefined ? undefined : assertSafeHref(href));
 </script>
 
-{#if href}
+{#if safeHref}
 	<a
 		class={classes}
 		class:is-sm={size === 'sm'}
 		class:is-danger={variant === 'danger' && !pressed}
 		class:is-drag-over={dragOver}
-		{href}
+		href={safeHref}
 		{title}
 		{...rest}
 	>
