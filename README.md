@@ -1,5 +1,8 @@
 # @wornpage/data-display
 
+> Part of **[Wornpage Components](https://github.com/wornpage/wornpage#component-library)**.
+> [Browse the catalog](https://wornpage.pages.dev) · [Setup guide](https://github.com/wornpage/wornpage/blob/main/docs/getting-started.md) · [Wornpage overview](https://github.com/wornpage/wornpage)
+
 Compact Svelte 5 badges, chips, avatars, metrics, progress indicators, and timelines for application workflows.
 The package is source-delivered so consuming SvelteKit applications compile it with their
 own theme tokens and CSP policy.
